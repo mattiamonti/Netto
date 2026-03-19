@@ -1,7 +1,6 @@
 import { Info } from "lucide-react"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -16,8 +15,8 @@ import { Separator } from "@/components/ui/separator"
 
 interface DisplayDataProps {
   label: string
-  value: number
-  symbol: string
+  value: number | string
+  symbol?: string
 }
 function DisplayData({ label, value, symbol = " €" }: DisplayDataProps) {
   return (

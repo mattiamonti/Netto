@@ -1,4 +1,4 @@
-import { BookOpen, Home, Rss } from "lucide-react"
+import { Home, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
@@ -7,20 +7,24 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
 
+interface NavigationMenuAppProps {
+  activeTab?: "home" | "settings"
+  onNavigate?: (tab: "home" | "settings") => void
+}
+
 const navigationMenuItems = [
-  { title: "Home", href: "#", icon: Home, isActive: true },
-  { title: "Blog", href: "#blog", icon: Rss },
-  { title: "Docs", href: "#docs", icon: BookOpen },
+  { title: "Home", href: "#", icon: Home, id: "home" as const },
+  { title: "Impostazioni", href: "#settings", icon: Settings, id: "settings" as const },
 ]
 
-export default function NavigationMenuApp() {
+export default function NavigationMenuApp({ activeTab = "home", onNavigate }: NavigationMenuAppProps) {
   return (
     <NavigationMenu className="fixed bottom-4 outline">
       <NavigationMenuList className="space-x-8">
         {navigationMenuItems.map((item) => (
           <NavigationMenuItem key={item.title}>
             <NavigationMenuLink
-              active={item.isActive}
+              active={activeTab === item.id}
               asChild
               className={cn(
                 "group relative inline-flex h-9 w-max items-center justify-center px-0.5 py-2 text-sm font-medium",
@@ -31,6 +35,10 @@ export default function NavigationMenuApp() {
                 "data-[state=open]:before:scale-x-100 data-active:bg-transparent data-active:before:scale-x-100",
                 "hover:bg-transparent focus:bg-transparent active:bg-transparent"
               )}
+              onClick={(e) => {
+                e.preventDefault()
+                onNavigate?.(item.id)
+              }}
             >
               <div className="flex-row items-center gap-2.5">
                 <item.icon className="h-5 w-5 shrink-0" />

@@ -1,7 +1,7 @@
 import AvatarDemo from "@/components/customized/avatar/avatar-01"
+import SettingsContent from "@/components/SettingsContent"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -32,10 +32,9 @@ export default function ProfileBar({ profileName }: ProfileBarProps) {
               Configura la tua app
             </AlertDialogDescription>
           </AlertDialogHeader>
-          Eleenco delle impsotazoni
+          <SettingsContent />
           <AlertDialogFooter className="mt-4">
             <AlertDialogCancel>Chiudi</AlertDialogCancel>
-            <AlertDialogAction>Salva</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
