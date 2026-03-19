@@ -7,9 +7,10 @@ import {
   ItemTitle,
 } from "@/components/ui/item"
 import { Badge } from "@/components/ui/badge"
-import AlertDialogInfo from "@/components/customized/alert-dialog/alert-dialog-04"
+import StockDetails from "@/components/StockDetails"
 import { TrendingUp } from "lucide-react"
 import SpinnerCircle from "./customized/spinner/spinner-02"
+import GainAndLossBadge from "@/components/GainAndLossBadge"
 
 interface StockProps {
   ticker: string
@@ -86,7 +87,7 @@ export default function Stock({
   return (
     <div className="flex h-auto w-full flex-col gap-6 md:gap-24">
       <Item variant="outline">
-        <ItemContent className="flex flex-col gap-4 md:flex-row">
+        <ItemContent className="flex flex-col gap-4 md:flex-row md:gap-6">
           <div>
             <ItemTitle>{name}</ItemTitle>
             <ItemDescription>{ticker}</ItemDescription>
@@ -95,16 +96,16 @@ export default function Stock({
             {loading ? (
               <SpinnerCircle />
             ) : (
-              <div className="text-lg">{price * quantity} €</div>
+              <div className="text-lg">{(price * quantity).toFixed(2)} €</div>
             )}
-            <Badge className="gap-1.5 border-emerald-600/40 bg-emerald-600/10 text-sm text-emerald-500 shadow-none hover:bg-emerald-600/10 dark:bg-emerald-600/20">
-              <TrendingUp size={20} />{" "}
-              {((price / priceBougth - 1) * 100).toFixed(2)}%
-            </Badge>
+            <GainAndLossBadge
+              profit={null}
+              percentage={(price / priceBougth - 1) * 100}
+            />
           </div>
         </ItemContent>
         <ItemActions>
-          <AlertDialogInfo
+          <StockDetails
             ticker={ticker}
             name={name}
             value={price}

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { ArrowUpRight, CirclePlay } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -8,8 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { TrendingUp } from "lucide-react"
+import GainAndLossBadge from "@/components/GainAndLossBadge"
 
 interface TotalValueCardProps {
   tickers: string[]
@@ -44,9 +41,7 @@ export default function TotalValueCard({ tickers }: TotalValueCardProps) {
           {totalPrice}
         </CardTitle>
         <CardDescription className="mx-auto mt-4 max-w-lg text-xl text-muted-foreground">
-          <Badge className="gap-1.5 border-emerald-600/40 bg-emerald-600/10 text-sm text-emerald-500 shadow-none hover:bg-emerald-600/10 dark:bg-emerald-600/20">
-            <TrendingUp size={20} /> 234 € | 10%
-          </Badge>
+          <GainAndLossBadge profit={234} percentage={10} />
         </CardDescription>
       </CardContent>
     </Card>

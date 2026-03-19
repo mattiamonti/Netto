@@ -1,5 +1,4 @@
 import { BookOpen, Home, Rss } from "lucide-react"
-import Link from "next/link"
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
@@ -14,9 +13,9 @@ const navigationMenuItems = [
   { title: "Docs", href: "#docs", icon: BookOpen },
 ]
 
-export default function NavigationMenuWithActiveItem() {
+export default function NavigationMenuApp() {
   return (
-    <NavigationMenu>
+    <NavigationMenu className="fixed bottom-4 outline">
       <NavigationMenuList className="space-x-8">
         {navigationMenuItems.map((item) => (
           <NavigationMenuItem key={item.title}>
@@ -33,10 +32,10 @@ export default function NavigationMenuWithActiveItem() {
                 "hover:bg-transparent focus:bg-transparent active:bg-transparent"
               )}
             >
-              <Link className="flex-row items-center gap-2.5" href={item.href}>
+              <div className="flex-row items-center gap-2.5">
                 <item.icon className="h-5 w-5 shrink-0" />
                 {item.title}
-              </Link>
+              </div>
             </NavigationMenuLink>
           </NavigationMenuItem>
         ))}
