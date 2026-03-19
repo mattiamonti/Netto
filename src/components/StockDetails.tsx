@@ -1,35 +1,27 @@
-import { Info } from "lucide-react"
+import {
+  Info,
+  TrendingUp,
+  TrendingDown,
+  Wallet,
+  Percent,
+  ArrowRight,
+  DollarSign,
+} from "lucide-react"
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  AlertDialogDescription,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import GainAndLossBadge from "@/components/GainAndLossBadge"
+import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-
-interface DisplayDataProps {
-  label: string
-  value: number | string
-  symbol?: string
-}
-function DisplayData({ label, value, symbol = " €" }: DisplayDataProps) {
-  return (
-    <div className="text-md flex flex-row items-baseline-last gap-2 md:flex-col md:gap-0">
-      <span className="text-muted-foreground">{label}</span>
-      <span className="text-lg">
-        {value}
-        {symbol}
-      </span>
-    </div>
-  )
-}
-
+import { Badge } from "@/components/ui/badge"
+import GainAndLossBadge from "@/components/GainAndLossBadge"
 interface InvestmentValueProps {
   value: number
   quantity: number
@@ -44,44 +36,12 @@ function InvestmentValue({
   const total = value * quantity
   const percentage = (value / priceBougth - 1) * 100
   return (
-    <div className="flex flex-col items-center gap-4 text-3xl font-semibold md:flex-row">
+    <div className="mx-4 flex flex-col items-center gap-4 text-3xl font-semibold md:flex-row">
       <div className="flex flex-row items-baseline-last gap-2">
         <span className="text-xl font-normal text-muted-foreground">€</span>
         {total.toFixed(2)}
       </div>
       <GainAndLossBadge profit={profit} percentage={percentage} />
-    </div>
-  )
-}
-
-interface PanicSellProps {
-  totalValue: number
-  taxRate: number
-  totalInvested: number
-}
-function PanicSell({ totalValue, taxRate, totalInvested }: PanicSellProps) {
-  const grossProfit = totalValue - totalInvested
-  let netProfit = 0
-  if (grossProfit > 0) {
-    netProfit = grossProfit - grossProfit * taxRate
-  } else {
-    netProfit = grossProfit
-  }
-  const capital = totalInvested + netProfit
-  const percentage = (netProfit / capital) * 100
-
-  return (
-    <div className="mt-4">
-      <h3 className="texttext-lg font-medium">Simulazione vendita</h3>
-      <div className="mt-2 flex flex-col gap-2 md:flex-row md:justify-between">
-        <DisplayData label="Totale" value={capital.toFixed(2)} />
-        <DisplayData label="Guadagno Netto" value={netProfit.toFixed(2)} />
-        <DisplayData
-          label="Percentuale"
-          value={percentage.toFixed(2)}
-          symbol="%"
-        />
-      </div>
     </div>
   )
 }
@@ -102,70 +62,122 @@ export default function StockDetails({
   priceBougth,
 }: StockDetailsProps) {
   const capital = priceBougth * quantity
+  const currentValue = value * quantity
+  const profit = currentValue - capital
+  const profitPercentage = (value / priceBougth - 1) * 100
+
+  const grossProfit = currentValue - capital
+  let netProfit = 0
+  if (grossProfit > 0) {
+    netProfit = grossProfit - grossProfit * 0.26
+  } else {
+    netProfit = grossProfit
+  }
+  const netCapital = capital + netProfit
+  const netPercentage = capital ? (netProfit / capital) * 100 : 0
+
+  const isProfit = profit >= 0
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">
-          <Info />
-          Info
+        <Button variant="outline" size="sm">
+          <Info className="h-4 w-4" />
+          Dettagli
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="sm:max-w-lg!">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-2xl font-semibold tracking-[-0.015em]">
+          <AlertDialogTitle className="w-full truncate text-2xl font-semibold tracking-[-0.015em]">
             {name}
           </AlertDialogTitle>
           <AlertDialogDescription className="text-md">
             {ticker}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="mt-4 flex max-h-[50vh] flex-col gap-4 overflow-x-hidden overflow-y-scroll text-left">
+
+        <div className="-mx-4 flex min-w-full flex-col gap-4">
           <InvestmentValue
             value={value}
             quantity={quantity}
             priceBougth={priceBougth}
           />
-          <div className="mt-4 flex flex-col gap-6">
-            <Separator />
-            <div className="flex flex-col md:flex-row md:items-baseline-last md:justify-between">
-              <DisplayData label="Valore attuale" value={value} />
-              <span className="text-md hidden text-muted-foreground md:block">
-                x
-              </span>
-              <DisplayData
-                label="Quote acquistate"
-                value={quantity}
-                symbol=""
-              />
+
+          {/* Dettagli Investimento */}
+          <div className="max-h-[40vh] space-y-4 overflow-y-scroll">
+            <div className="grid grid-cols-2 gap-3">
+              <Card className="flex h-fit gap-4 p-4">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Wallet className="h-4 w-4" />
+                  <span className="text-xs font-medium">Investito</span>
+                </div>
+                <p className="text-lg font-semibold">{capital.toFixed(2)} €</p>
+                <p className="text-xs text-muted-foreground">
+                  {quantity} quote
+                </p>
+              </Card>
+              <Card className="flex h-fit gap-4 p-4">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <DollarSign className="h-4 w-4" />
+                  <span className="text-xs font-medium">Prezzo/unità</span>
+                </div>
+                <p className="text-lg font-semibold">
+                  {priceBougth.toFixed(2)} €
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Attuale: {value.toFixed(2)} €
+                </p>
+              </Card>
             </div>
-            <Separator />
-            <div className="flex flex-col md:flex-row md:items-baseline-last md:justify-between">
-              <DisplayData label="Prezzo di carico" value={priceBougth} />
-              <span className="text-md hidden text-muted-foreground md:block">
-                x
-              </span>
-              <DisplayData
-                label="Quote acquistate"
-                value={quantity}
-                symbol=""
-              />
-              <span className="text-md hidden text-muted-foreground md:block">
-                =
-              </span>
-              <DisplayData
-                label="Controvalore investito"
-                value={capital.toFixed(2)}
-              />
-            </div>
+
+            {/* Simulazione Vendita */}
+            <Card className="flex h-fit gap-4 p-4">
+              <div className="flex items-center gap-2 border-b p-2">
+                <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">Simulazione Vendita</span>
+              </div>
+              <div className="px-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      Valore lordo
+                    </span>
+                    <span className="font-medium">
+                      {grossProfit >= 0 ? "+" : ""}
+                      {grossProfit.toFixed(2)} €
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      Tasse (26%)
+                    </span>
+                    <span className="font-medium text-yellow-600">
+                      {grossProfit > 0
+                        ? `-${(grossProfit * 0.26).toFixed(2)} €`
+                        : "0.00 €"}
+                    </span>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-sm font-medium">Netto in tasca</span>
+                    <div className="text-right">
+                      <p className="text-lg font-bold">
+                        {netCapital.toFixed(2)} €
+                      </p>
+                      <p
+                        className={`text-xs ${netProfit >= 0 ? "text-emerald-600" : "text-red-600"}`}
+                      >
+                        {netProfit >= 0 ? "+" : ""}
+                        {netProfit.toFixed(2)} € ({netPercentage.toFixed(2)}%)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
-          <Separator />
-          <PanicSell
-            totalValue={value * quantity}
-            totalInvested={capital}
-            taxRate={0.26}
-          />
         </div>
-        <AlertDialogFooter className="mt-4">
+
+        <AlertDialogFooter>
           <AlertDialogCancel>Chiudi</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
