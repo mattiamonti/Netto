@@ -109,7 +109,7 @@ export default function StockDetails({
           Info
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="max-h-[80vh] sm:max-w-lg!">
+      <AlertDialogContent className="sm:max-w-lg!">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-2xl font-semibold tracking-[-0.015em]">
             {name}

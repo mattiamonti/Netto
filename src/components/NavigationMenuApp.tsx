@@ -27,7 +27,7 @@ export default function NavigationMenuApp({
   onNavigate,
 }: NavigationMenuAppProps) {
   return (
-    <NavigationMenu className="fixed right-0 bottom-0 left-0 min-w-full border-t bg-background shadow-lg">
+    <NavigationMenu className="fixed right-0 bottom-8 left-0 min-w-full border-t bg-background shadow-lg md:bottom-0">
       <NavigationMenuList className="flex min-w-full items-center justify-around">
         {navigationMenuItems.map((item) => (
           <NavigationMenuItem key={item.title} className="min-w-[25%] flex-1">

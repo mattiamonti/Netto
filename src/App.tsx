@@ -4,6 +4,7 @@ import ProfileBar from "@/components/ProfileBar"
 import Stock from "@/components/Stock"
 import NavigationMenuApp from "@/components/NavigationMenuApp"
 import SettingsContent from "@/components/SettingsContent"
+import PWAInstallPrompt from "@/components/PWAInstallPrompt"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TotalPanicSellSection from "./components/TotalPanicSellSection"
 import { useInvestments } from "@/hooks/useInvestments"
@@ -28,6 +29,8 @@ export function App() {
   return (
     <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
       <ProfileBar profileName="Mattia" />
+
+      <PWAInstallPrompt />
 
       <TotalValueCard investments={investments} />
       <TotalPanicSellSection investments={investments} />
