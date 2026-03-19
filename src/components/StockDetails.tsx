@@ -157,10 +157,10 @@ export default function StockDetails({
                         : "0.00 €"}
                     </span>
                   </div>
-                  <div className="mt-2 flex items-center justify-between">
+                  <div className="mt-4 flex items-center justify-between">
                     <span className="text-sm font-medium">Netto in tasca</span>
                     <div className="text-right">
-                      <p className="text-lg font-bold">
+                      <p className="text-lg font-semibold">
                         {netCapital.toFixed(2)} €
                       </p>
                       <p
