@@ -40,17 +40,15 @@ export default function TotalPanicSellSection({
   const { total: totalPrice, invested: totalInvested } =
     calculateTotalValue(investments)
 
-  const grossProfit =
-    totalInvested && totalPrice ? totalPrice - totalInvested : null
+  const grossProfit = totalPrice - totalInvested
   let netProfit = 0
-  if (grossProfit && grossProfit > 0) {
+  if (grossProfit > 0) {
     netProfit = grossProfit - grossProfit * 0.26
   } else {
     netProfit = grossProfit
   }
   const capital = totalInvested + netProfit
-  const percentage =
-    totalInvested && netProfit ? (netProfit / totalInvested) * 100 : null
+  const percentage = totalInvested ? (netProfit / totalInvested) * 100 : 0
 
   return (
     <Collapsible className="w-full space-y-2">

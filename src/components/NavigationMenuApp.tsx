@@ -14,36 +14,42 @@ interface NavigationMenuAppProps {
 
 const navigationMenuItems = [
   { title: "Home", href: "#", icon: Home, id: "home" as const },
-  { title: "Impostazioni", href: "#settings", icon: Settings, id: "settings" as const },
+  {
+    title: "Impostazioni",
+    href: "#settings",
+    icon: Settings,
+    id: "settings" as const,
+  },
 ]
 
-export default function NavigationMenuApp({ activeTab = "home", onNavigate }: NavigationMenuAppProps) {
+export default function NavigationMenuApp({
+  activeTab = "home",
+  onNavigate,
+}: NavigationMenuAppProps) {
   return (
-    <NavigationMenu className="fixed bottom-4 outline">
-      <NavigationMenuList className="space-x-8">
+    <NavigationMenu className="fixed right-0 bottom-0 left-0 min-w-full border-t bg-background shadow-lg">
+      <NavigationMenuList className="flex min-w-full items-center justify-around">
         {navigationMenuItems.map((item) => (
-          <NavigationMenuItem key={item.title}>
+          <NavigationMenuItem key={item.title} className="min-w-[25%] flex-1">
             <NavigationMenuLink
               active={activeTab === item.id}
-              asChild
               className={cn(
-                "group relative inline-flex h-9 w-max items-center justify-center px-0.5 py-2 text-sm font-medium",
-                "before:absolute before:inset-x-0 before:bottom-0 before:h-[2px] before:scale-x-0 before:bg-primary before:transition-transform",
-                "hover:text-accent-foreground hover:before:scale-x-100",
-                "focus:text-accent-foreground focus:outline-hidden focus:before:scale-x-100",
-                "disabled:pointer-events-none disabled:opacity-50",
-                "data-[state=open]:before:scale-x-100 data-active:bg-transparent data-active:before:scale-x-100",
-                "hover:bg-transparent focus:bg-transparent active:bg-transparent"
+                "group relative flex flex-col items-center justify-center gap-1 px-12 py-3 text-xs font-medium transition-colors",
+                "data-[active=true]:text-primary",
+                "hover:text-primary"
               )}
               onClick={(e) => {
                 e.preventDefault()
                 onNavigate?.(item.id)
               }}
             >
-              <div className="flex-row items-center gap-2.5">
-                <item.icon className="h-5 w-5 shrink-0" />
-                {item.title}
-              </div>
+              <item.icon
+                className={cn(
+                  "h-12 w-12 shrink-0 scale-150 transition-transform",
+                  activeTab === item.id ? "scale-170" : ""
+                )}
+              />
+              <span className="hidden">{item.title}</span>
             </NavigationMenuLink>
           </NavigationMenuItem>
         ))}

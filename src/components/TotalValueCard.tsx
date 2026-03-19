@@ -29,10 +29,13 @@ function calculateTotalValue(investments: Investment[]) {
 }
 
 export default function TotalValueCard({ investments }: TotalValueCardProps) {
-  const { total: totalPrice, invested: totalInvested } = calculateTotalValue(investments)
+  const { total: totalPrice, invested: totalInvested } =
+    calculateTotalValue(investments)
 
-  const grossProfit = totalInvested && totalPrice ? totalPrice - totalInvested : null
-  const percentage = totalInvested && grossProfit ? (grossProfit / totalInvested) * 100 : null
+  const grossProfit =
+    totalInvested && totalPrice ? totalPrice - totalInvested : null
+  const percentage =
+    totalInvested && grossProfit ? (grossProfit / totalInvested) * 100 : null
 
   return (
     <Card className="w-full max-w-2xl shadow-none">
@@ -47,7 +50,7 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
           {totalPrice !== null ? totalPrice.toFixed(2) : "0.00"}
         </CardTitle>
         {grossProfit !== null && percentage !== null && (
-          <div className="mt-2">
+          <div className="mt-2 flex justify-center">
             <GainAndLossBadge profit={grossProfit} percentage={percentage} />
           </div>
         )}
