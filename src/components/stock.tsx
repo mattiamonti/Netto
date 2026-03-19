@@ -28,9 +28,9 @@ export default function Stock({
   }
 
   return (
-    <div className="flex h-auto w-full flex-col gap-6 md:gap-24">
+    <div className="flex h-auto w-full flex-col gap-6 md:gap-4">
       <Item variant="outline">
-        <ItemContent className="flex flex-col gap-4 md:flex-row md:gap-6">
+        <ItemContent className="flex flex-col gap-2 md:flex-row md:gap-4">
           <div>
             <ItemTitle>{name}</ItemTitle>
             <ItemDescription>{ticker}</ItemDescription>
@@ -39,11 +39,15 @@ export default function Stock({
             {loading ? (
               <SpinnerCircle />
             ) : (
-              <div className="text-lg">{price && ((price * quantityInput).toFixed(2) + " €")}</div>
+              <div className="text-lg text-nowrap">
+                {price && (price * quantityInput).toFixed(2) + " €"}
+              </div>
             )}
             <GainAndLossBadge
               profit={null}
-              percentage={price && priceBougth ? (price / priceBougth - 1) * 100 : 0}
+              percentage={
+                price && priceBougth ? (price / priceBougth - 1) * 100 : 0
+              }
             />
           </div>
         </ItemContent>
