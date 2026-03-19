@@ -351,13 +351,39 @@ export default function SettingsContent() {
                       investment={investment}
                       onUpdate={handleUpdateInvestment}
                     />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleRemoveInvestment(investment.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <div className="flex items-center gap-2">
+                            <Trash2 className="size-5 text-destructive" />
+                            <AlertDialogTitle>
+                              Elimina investimento
+                            </AlertDialogTitle>
+                          </div>
+                          <AlertDialogDescription>
+                            Questo eliminerà l'investimento e tutti i dati
+                            collegati ad esso. L'azione non può essere
+                            annullata.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() =>
+                              handleRemoveInvestment(investment.id)
+                            }
+                          >
+                            Elimina investimento
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </ItemActions>
                 </Item>
               ))

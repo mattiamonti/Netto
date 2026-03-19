@@ -30,7 +30,7 @@ export default function Stock({
   return (
     <div className="flex h-auto w-full flex-col gap-6 md:gap-4">
       <Item variant="outline">
-        <ItemContent className="flex flex-col gap-2 md:flex-row md:gap-4">
+        <ItemContent className="flex flex-col gap-2 md:flex-row md:justify-between">
           <div>
             <ItemTitle>{name}</ItemTitle>
             <ItemDescription>{ticker}</ItemDescription>
