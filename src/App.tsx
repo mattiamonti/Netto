@@ -27,7 +27,7 @@ export function App() {
   }
 
   return (
-    <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
+    <div className="mx-auto flex h-full max-w-2xl flex-col gap-6 overflow-y-hidden p-6">
       <ProfileBar profileName="Mattia" />
 
       <PWAInstallPrompt />
@@ -40,7 +40,7 @@ export function App() {
           <TabsTrigger value="etfs">ETFs ({etfs.length})</TabsTrigger>
           <TabsTrigger value="stocks">Stocks ({stocks.length})</TabsTrigger>
         </TabsList>
-        <TabsContent value="etfs">
+        <TabsContent value="etfs" className="max-h-[40svh] overflow-y-scroll">
           {!isLoaded ? (
             <p className="py-4 text-center text-sm text-muted-foreground">
               Caricamento...
