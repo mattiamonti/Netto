@@ -1,9 +1,22 @@
 import { Button } from "@/components/ui/button"
+import TotalValueCard from "@/components/customized/card/card-04"
+import RoundedCornersTableDemo from "./components/customized/table/table-04"
+import ProfileBar from "@/components/profile-bar"
+import Stock from "@/components/stock"
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
+    <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
+      <ProfileBar profileName="Mattia" />
+
+      <TotalValueCard tickers={["SWDA.MI", "SMEA.MI"]} />
+
+      <div className="flex flex-col gap-2">
+        <Stock ticker="SWDA.MI" priceBougth={100} quantityInput={10} />
+        <Stock ticker="SMEA.MI" priceBougth={90} quantityInput={10} />
+      </div>
+
+      <div className="flex hidden max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
         <div>
           <h1 className="font-medium">Project ready!</h1>
           <p>You may now add components and start building.</p>
