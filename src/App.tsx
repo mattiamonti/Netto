@@ -35,7 +35,7 @@ export function App() {
       <TotalValueCard investments={investments} />
       <TotalPanicSellSection investments={investments} />
 
-      <Tabs defaultValue="etfs" className="min-w-full">
+      <Tabs defaultValue="etfs" className="mb-16 min-w-full">
         <TabsList variant="line" className="w-full">
           <TabsTrigger value="etfs">ETFs ({etfs.length})</TabsTrigger>
           <TabsTrigger value="stocks">Stocks ({stocks.length})</TabsTrigger>

@@ -93,10 +93,12 @@ function InvestmentForm({ initialData, onSubmit, onCancel }: InvestmentFormProps
         <Input
           id="quantity"
           type="number"
+          inputMode="decimal"
           step="any"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           placeholder="Es. 10"
+          pattern="[0-9]*"
         />
       </div>
 
@@ -105,10 +107,12 @@ function InvestmentForm({ initialData, onSubmit, onCancel }: InvestmentFormProps
         <Input
           id="priceBought"
           type="number"
+          inputMode="decimal"
           step="any"
           value={priceBought}
           onChange={(e) => setPriceBought(e.target.value)}
           placeholder="Es. 59.99"
+          pattern="[0-9]*"
         />
       </div>
 

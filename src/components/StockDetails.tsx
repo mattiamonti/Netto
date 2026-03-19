@@ -101,6 +101,7 @@ export default function StockDetails({
   quantity,
   priceBougth,
 }: StockDetailsProps) {
+  const capital = priceBougth * quantity
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -153,14 +154,14 @@ export default function StockDetails({
               </span>
               <DisplayData
                 label="Controvalore investito"
-                value={priceBougth * quantity}
+                value={capital.toFixed(2)}
               />
             </div>
           </div>
           <Separator />
           <PanicSell
             totalValue={value * quantity}
-            totalInvested={priceBougth * quantity}
+            totalInvested={capital}
             taxRate={0.26}
           />
         </div>
