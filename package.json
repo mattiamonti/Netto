@@ -1,9 +1,9 @@
 {
-  "name": "my-portf",
+  "name": "Netto",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
-  "homepage": "https://<your-username>.github.io/<your-repo-name>",
+  "homepage": "https://mattiamonti.github.io/Netto",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
