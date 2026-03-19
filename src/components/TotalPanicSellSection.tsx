@@ -1,12 +1,4 @@
-import { Plus } from "lucide-react"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import GainAndLossBadge from "@/components/GainAndLossBadge"
+import { Plus, TriangleAlert } from "lucide-react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -14,6 +6,8 @@ import {
 } from "@/components/ui/collapsible"
 import type { Investment } from "@/types/investment"
 import { getCachedPrice } from "@/hooks/useStockPrice"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Separator } from "@/components/ui/separator"
 
 function calculateTotalValue(investments: Investment[]) {
   let total = 0
@@ -57,24 +51,22 @@ export default function TotalPanicSellSection({
         Simulazione vendita totale
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
-        <Card className="w-full max-w-2xl shadow-none">
-          <CardHeader className="px-8">
-            <CardDescription className="text-md max-w-lg text-left text-muted-foreground md:text-lg">
-              Guadagno dalla vendita immediata
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="mx-auto -mt-4 flex flex-col px-8">
-            <CardTitle className="text-3xl font-medium tracking-tight md:text-4xl">
-              <span className="text-lg text-muted-foreground md:text-xl">
-                €{" "}
-              </span>
-              {capital !== null ? capital.toFixed(2) : "0.00"}
-            </CardTitle>
-            <CardDescription className="mx-auto mt-2 max-w-lg text-xl text-muted-foreground">
-              <GainAndLossBadge profit={netProfit} percentage={percentage} />
-            </CardDescription>
-          </CardContent>
-        </Card>
+        <Alert className="text-warning w-full border-yellow-200/60 bg-yellow-200/10">
+          <AlertTitle className="flex flex-row items-center gap-2 font-semibold text-yellow-200/80">
+            <TriangleAlert size={16} />
+            Simulazione vendita immediata
+          </AlertTitle>
+          <AlertDescription className="flex flex-col gap-2 text-foreground">
+            <span>Di tutti gli strumenti, tenendo conto delle tasse.</span>
+            <Separator />
+            <span>Tasse (26%) -{(grossProfit - netProfit).toFixed(2)} €</span>
+            <span>Guadagno Netto {netProfit.toFixed(2)} €</span>
+            <Separator />
+            <span className="text-lg">
+              Totale {capital !== null ? capital.toFixed(2) : "0.00"} €
+            </span>
+          </AlertDescription>
+        </Alert>
       </CollapsibleContent>
     </Collapsible>
   )
