@@ -11,6 +11,17 @@ import {
   ItemTitle,
   ItemActions,
 } from "@/components/ui/item"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Trash2, Edit } from "lucide-react"
 import {
@@ -25,14 +36,27 @@ import {
 
 interface InvestmentFormProps {
   initialData?: Investment
-  onSubmit: (data: { ticker: string; quantity: number; priceBought: number; type: InvestmentType }) => void
+  onSubmit: (data: {
+    ticker: string
+    quantity: number
+    priceBought: number
+    type: InvestmentType
+  }) => void
   onCancel: () => void
 }
 
-function InvestmentForm({ initialData, onSubmit, onCancel }: InvestmentFormProps) {
+function InvestmentForm({
+  initialData,
+  onSubmit,
+  onCancel,
+}: InvestmentFormProps) {
   const [ticker, setTicker] = useState(initialData?.ticker ?? "")
-  const [quantity, setQuantity] = useState(initialData?.quantity.toString() ?? "")
-  const [priceBought, setPriceBought] = useState(initialData?.priceBought.toString() ?? "")
+  const [quantity, setQuantity] = useState(
+    initialData?.quantity.toString() ?? ""
+  )
+  const [priceBought, setPriceBought] = useState(
+    initialData?.priceBought.toString() ?? ""
+  )
   const [type, setType] = useState<InvestmentType>(initialData?.type ?? "etf")
   const [error, setError] = useState<string | null>(null)
 
@@ -80,10 +104,18 @@ function InvestmentForm({ initialData, onSubmit, onCancel }: InvestmentFormProps
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="type">Tipo</Label>
-        <Tabs value={type} onValueChange={(v) => setType(v as InvestmentType)} className="w-full">
+        <Tabs
+          value={type}
+          onValueChange={(v) => setType(v as InvestmentType)}
+          className="w-full"
+        >
           <TabsList className="w-full">
-            <TabsTrigger value="etf" className="flex-1">ETF</TabsTrigger>
-            <TabsTrigger value="stock" className="flex-1">Stock</TabsTrigger>
+            <TabsTrigger value="etf" className="flex-1">
+              ETF
+            </TabsTrigger>
+            <TabsTrigger value="stock" className="flex-1">
+              Stock
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -124,7 +156,9 @@ function InvestmentForm({ initialData, onSubmit, onCancel }: InvestmentFormProps
             Annulla
           </Button>
         </DialogClose>
-        <Button type="submit">{initialData ? "Salva modifiche" : "Aggiungi"}</Button>
+        <Button type="submit">
+          {initialData ? "Salva modifiche" : "Aggiungi"}
+        </Button>
       </DialogFooter>
     </form>
   )
@@ -132,10 +166,16 @@ function InvestmentForm({ initialData, onSubmit, onCancel }: InvestmentFormProps
 
 interface EditInvestmentDialogProps {
   investment: Investment
-  onUpdate: (id: string, data: { quantity: number; priceBought: number }) => void
+  onUpdate: (
+    id: string,
+    data: { quantity: number; priceBought: number }
+  ) => void
 }
 
-function EditInvestmentDialog({ investment, onUpdate }: EditInvestmentDialogProps) {
+function EditInvestmentDialog({
+  investment,
+  onUpdate,
+}: EditInvestmentDialogProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -152,7 +192,10 @@ function EditInvestmentDialog({ investment, onUpdate }: EditInvestmentDialogProp
         <InvestmentForm
           initialData={investment}
           onSubmit={(data) => {
-            onUpdate(investment.id, { quantity: data.quantity, priceBought: data.priceBought })
+            onUpdate(investment.id, {
+              quantity: data.quantity,
+              priceBought: data.priceBought,
+            })
             setOpen(false)
           }}
           onCancel={() => setOpen(false)}
@@ -163,18 +206,32 @@ function EditInvestmentDialog({ investment, onUpdate }: EditInvestmentDialogProp
 }
 
 export default function SettingsContent() {
-  const { investments, addInvestment, updateInvestment, removeInvestment, getInvestmentsByType } = useInvestments()
+  const {
+    investments,
+    addInvestment,
+    updateInvestment,
+    removeInvestment,
+    getInvestmentsByType,
+  } = useInvestments()
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
 
   const etfs = getInvestmentsByType("etf")
   const stocks = getInvestmentsByType("stock")
 
-  const handleAddInvestment = (data: { ticker: string; quantity: number; priceBought: number; type: InvestmentType }) => {
+  const handleAddInvestment = (data: {
+    ticker: string
+    quantity: number
+    priceBought: number
+    type: InvestmentType
+  }) => {
     addInvestment(data)
     setIsAddDialogOpen(false)
   }
 
-  const handleUpdateInvestment = (id: string, data: { quantity: number; priceBought: number }) => {
+  const handleUpdateInvestment = (
+    id: string,
+    data: { quantity: number; priceBought: number }
+  ) => {
     updateInvestment(id, data)
   }
 
@@ -215,14 +272,17 @@ export default function SettingsContent() {
 
           <TabsContent value="etfs" className="space-y-2">
             {etfs.length === 0 ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">Nessun ETF salvato</p>
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Nessun ETF salvato
+              </p>
             ) : (
               etfs.map((investment) => (
                 <Item key={investment.id} variant="outline">
                   <ItemContent>
                     <ItemTitle>{investment.ticker}</ItemTitle>
                     <ItemDescription>
-                      {investment.quantity} quote @ {investment.priceBought.toFixed(2)} €
+                      {investment.quantity} quote @{" "}
+                      {investment.priceBought.toFixed(2)} €
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
@@ -230,13 +290,39 @@ export default function SettingsContent() {
                       investment={investment}
                       onUpdate={handleUpdateInvestment}
                     />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleRemoveInvestment(investment.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <div className="flex items-center gap-2">
+                            <Trash2 className="size-5 text-destructive" />
+                            <AlertDialogTitle>
+                              Elimina investimento
+                            </AlertDialogTitle>
+                          </div>
+                          <AlertDialogDescription>
+                            Questo eliminerà l'investimento e tutti i dati
+                            collegati ad esso. L'azione non può essere
+                            annullata.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            variant="destructive"
+                            onClick={() =>
+                              handleRemoveInvestment(investment.id)
+                            }
+                          >
+                            Elimina investimento
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </ItemActions>
                 </Item>
               ))
@@ -245,14 +331,17 @@ export default function SettingsContent() {
 
           <TabsContent value="stocks" className="space-y-2">
             {stocks.length === 0 ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">Nessuno Stock salvato</p>
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Nessuno Stock salvato
+              </p>
             ) : (
               stocks.map((investment) => (
                 <Item key={investment.id} variant="outline">
                   <ItemContent>
                     <ItemTitle>{investment.ticker}</ItemTitle>
                     <ItemDescription>
-                      {investment.quantity} quote @ {investment.priceBought.toFixed(2)} €
+                      {investment.quantity} quote @{" "}
+                      {investment.priceBought.toFixed(2)} €
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
