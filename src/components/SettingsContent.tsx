@@ -23,7 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Trash2, Edit, PlusCircle, Plus } from "lucide-react"
+import { Trash2, Edit, Plus } from "lucide-react"
 import {
   Dialog,
   DialogContent,

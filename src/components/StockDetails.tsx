@@ -1,12 +1,4 @@
-import {
-  Info,
-  TrendingUp,
-  TrendingDown,
-  Wallet,
-  Percent,
-  ArrowRight,
-  DollarSign,
-} from "lucide-react"
+import { Info, Wallet, ArrowRight, DollarSign } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -19,8 +11,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 interface InvestmentValueProps {
   value: number
@@ -63,8 +53,6 @@ export default function StockDetails({
 }: StockDetailsProps) {
   const capital = priceBougth * quantity
   const currentValue = value * quantity
-  const profit = currentValue - capital
-  const profitPercentage = (value / priceBougth - 1) * 100
 
   const grossProfit = currentValue - capital
   let netProfit = 0
@@ -75,8 +63,6 @@ export default function StockDetails({
   }
   const netCapital = capital + netProfit
   const netPercentage = capital ? (netProfit / capital) * 100 : 0
-
-  const isProfit = profit >= 0
 
   return (
     <AlertDialog>

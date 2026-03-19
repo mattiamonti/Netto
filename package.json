@@ -3,13 +3,15 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "homepage": "https://<your-username>.github.io/<your-repo-name>",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "typecheck": "tsc --noEmit",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@fontsource-variable/lora": "^5.2.8",
@@ -36,6 +38,7 @@
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
+    "gh-pages": "^6.3.0",
     "globals": "^16.5.0",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
