@@ -23,7 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Trash2, Edit } from "lucide-react"
+import { Trash2, Edit, PlusCircle, Plus } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -245,7 +245,9 @@ export default function SettingsContent() {
         <h2 className="text-lg font-semibold">I tuoi investimenti</h2>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button size="sm">Aggiungi</Button>
+            <Button size="icon">
+              <Plus />
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
