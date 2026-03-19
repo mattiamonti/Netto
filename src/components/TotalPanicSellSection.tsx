@@ -1,4 +1,4 @@
-import { Plus, TriangleAlert } from "lucide-react"
+import { Minus, Plus, TriangleAlert } from "lucide-react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -8,6 +8,7 @@ import type { Investment } from "@/types/investment"
 import { getCachedPrice } from "@/hooks/useStockPrice"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
+import { useState } from "react"
 
 function calculateTotalValue(investments: Investment[]) {
   let total = 0
@@ -31,6 +32,7 @@ interface TotalValueCardProps {
 export default function TotalPanicSellSection({
   investments,
 }: TotalValueCardProps) {
+  const [sectionOpen, setSectionOpen] = useState<boolean>(false)
   const { total: totalPrice, invested: totalInvested } =
     calculateTotalValue(investments)
 
@@ -46,9 +48,18 @@ export default function TotalPanicSellSection({
 
   return (
     <Collapsible className="w-full space-y-2">
-      <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium hover:underline">
-        <Plus className="h-4 w-4" />
-        Simulazione vendita totale
+      <CollapsibleTrigger>
+        <div
+          className="flex items-center gap-2 text-sm font-medium hover:underline"
+          onClick={() => setSectionOpen(!sectionOpen)}
+        >
+          {sectionOpen ? (
+            <Minus className="h-4 w-4" />
+          ) : (
+            <Plus className="h-4 w-4" />
+          )}
+          Simulazione vendita totale
+        </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
         <Alert className="text-warning w-full border-yellow-200/60 bg-yellow-200/10">
@@ -63,7 +74,8 @@ export default function TotalPanicSellSection({
             <span>Guadagno Netto {netProfit.toFixed(2)} €</span>
             <Separator />
             <span className="text-lg">
-              Totale {capital !== null ? capital.toFixed(2) : "0.00"} €
+              Totale {capital !== null ? capital.toFixed(2) : "0.00"} € (
+              {percentage.toFixed(2)}%)
             </span>
           </AlertDescription>
         </Alert>
