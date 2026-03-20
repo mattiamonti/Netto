@@ -12,6 +12,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
+import { useUserSettings } from "@/hooks/useUserSettings"
+
 interface InvestmentValueProps {
   value: number
   quantity: number
@@ -51,13 +53,14 @@ export default function StockDetails({
   quantity,
   priceBougth,
 }: StockDetailsProps) {
+  const { settings } = useUserSettings()
   const capital = priceBougth * quantity
   const currentValue = value * quantity
 
   const grossProfit = currentValue - capital
   let netProfit = 0
   if (grossProfit > 0) {
-    netProfit = grossProfit - grossProfit * 0.26
+    netProfit = grossProfit - grossProfit * (settings.taxPercentage / 100)
   } else {
     netProfit = grossProfit
   }
@@ -135,11 +138,11 @@ export default function StockDetails({
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
-                      Tasse (26%)
+                      Tasse ({settings.taxPercentage}%)
                     </span>
                     <span className="font-medium text-yellow-600">
                       {grossProfit > 0
-                        ? `-${(grossProfit * 0.26).toFixed(2)} €`
+                        ? `-${(grossProfit - netProfit).toFixed(2)} €`
                         : "0.00 €"}
                     </span>
                   </div>

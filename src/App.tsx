@@ -8,19 +8,35 @@ import PWAInstallPrompt from "@/components/PWAInstallPrompt"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TotalPanicSellSection from "./components/TotalPanicSellSection"
 import { useInvestments } from "@/hooks/useInvestments"
+import { useUserSettings } from "@/hooks/useUserSettings"
+import UserSettingsForm from "./components/UserSettingsForm"
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<"home" | "settings">("home")
+  const [activeTab, setActiveTab] = useState<"home" | "settings" | "strumenti">(
+    "home"
+  )
   const { investments, getInvestmentsByType, isLoaded } = useInvestments()
+  const { settings } = useUserSettings()
 
   const etfs = getInvestmentsByType("etf")
   const stocks = getInvestmentsByType("stock")
+  const profileName = settings.name || "..."
+
+  if (activeTab === "strumenti") {
+    return (
+      <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
+        <ProfileBar profileName={profileName} />
+        <SettingsContent />
+        <NavigationMenuApp activeTab={activeTab} onNavigate={setActiveTab} />
+      </div>
+    )
+  }
 
   if (activeTab === "settings") {
     return (
       <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
-        <ProfileBar profileName="Mattia" />
-        <SettingsContent />
+        <ProfileBar profileName={profileName} />
+        <UserSettingsForm />
         <NavigationMenuApp activeTab={activeTab} onNavigate={setActiveTab} />
       </div>
     )
@@ -28,7 +44,7 @@ export function App() {
 
   return (
     <div className="mx-auto flex h-full max-w-2xl flex-col gap-6 overflow-y-hidden p-6">
-      <ProfileBar profileName="Mattia" />
+      <ProfileBar profileName={profileName} />
 
       <PWAInstallPrompt />
 

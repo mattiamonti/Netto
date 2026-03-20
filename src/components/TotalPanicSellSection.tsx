@@ -9,6 +9,7 @@ import { getCachedPrice } from "@/hooks/useStockPrice"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
+import { useUserSettings } from "@/hooks/useUserSettings"
 
 function calculateTotalValue(investments: Investment[]) {
   let total = 0
@@ -35,11 +36,12 @@ export default function TotalPanicSellSection({
   const [sectionOpen, setSectionOpen] = useState<boolean>(false)
   const { total: totalPrice, invested: totalInvested } =
     calculateTotalValue(investments)
+  const { settings } = useUserSettings()
 
   const grossProfit = totalPrice - totalInvested
   let netProfit = 0
   if (grossProfit > 0) {
-    netProfit = grossProfit - grossProfit * 0.26
+    netProfit = grossProfit - grossProfit * (settings.taxPercentage / 100)
   } else {
     netProfit = grossProfit
   }
@@ -70,7 +72,10 @@ export default function TotalPanicSellSection({
           <AlertDescription className="flex flex-col gap-2 text-foreground">
             <span>Di tutti gli strumenti, tenendo conto delle tasse.</span>
             <Separator />
-            <span>Tasse (26%) -{(grossProfit - netProfit).toFixed(2)} €</span>
+            <span>
+              Tasse ({settings.taxPercentage}%) -
+              {(grossProfit - netProfit).toFixed(2)} €
+            </span>
             <span>Guadagno Netto {netProfit.toFixed(2)} €</span>
             <Separator />
             <span className="text-lg">

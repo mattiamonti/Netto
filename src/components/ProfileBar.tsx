@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import UserSettingsForm from "./UserSettingsForm"
 
 interface ProfileBarProps {
   profileName: string
@@ -36,7 +37,7 @@ export default function ProfileBar({ profileName }: ProfileBarProps) {
         </Button>
         <AlertDialog>
           <AlertDialogTrigger>
-            <AvatarDemo />
+            <AvatarDemo profileName={profileName} />
           </AlertDialogTrigger>
           <AlertDialogContent className="sm:max-w-lg!">
             <AlertDialogHeader>
@@ -47,8 +48,8 @@ export default function ProfileBar({ profileName }: ProfileBarProps) {
                 Configura la tua app
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <SettingsContent />
-            <AlertDialogFooter className="mt-4">
+            <UserSettingsForm />
+            <AlertDialogFooter className="-mt-4">
               <AlertDialogCancel>Chiudi</AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>

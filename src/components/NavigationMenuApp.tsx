@@ -1,4 +1,4 @@
-import { Home, Settings } from "lucide-react"
+import { Home, List, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
@@ -14,6 +14,12 @@ interface NavigationMenuAppProps {
 
 const navigationMenuItems = [
   { title: "Home", href: "#", icon: Home, id: "home" as const },
+  {
+    title: "Strumenti",
+    href: "#strumenti",
+    icon: List,
+    id: "strumenti" as const,
+  },
   {
     title: "Impostazioni",
     href: "#settings",

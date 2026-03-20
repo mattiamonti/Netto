@@ -15,8 +15,8 @@ export default defineConfig({
       injectRegister: "auto",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
       manifest: {
-        name: "Portafoglio Investimenti",
-        short_name: "Portafoglio",
+        name: "Netto - effective ETFs & Stock tracker",
+        short_name: "Netto",
         description: "Traccia i tuoi investimenti in ETF e Stock",
         theme_color: "#ffffff",
         background_color: "#ffffff",

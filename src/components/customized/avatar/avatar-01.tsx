@@ -1,9 +1,12 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-
-export default function AvatarDemo() {
+interface AvatarDemoProps {
+  profileName: string
+}
+export default function AvatarDemo({ profileName }: AvatarDemoProps) {
+  const initial = profileName.at(0)?.toUpperCase()
   return (
     <Avatar className="cursor-pointer">
-      <AvatarFallback>MM</AvatarFallback>
+      <AvatarFallback>{initial === "." ? "?" : initial}</AvatarFallback>
     </Avatar>
   )
 }
