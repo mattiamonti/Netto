@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useUserSettings } from "@/hooks/useUserSettings"
+import { useAppConfig } from "@/hooks/useAppConfig"
 import { Input } from "@/components/ui/input"
 import {
   Item,
@@ -8,16 +9,22 @@ import {
   ItemTitle,
   ItemGroup,
 } from "@/components/ui/item"
-import { Check } from "lucide-react"
+import { Check, Download, Upload, Trash2 } from "lucide-react"
 import { Button } from "./ui/button"
+import type { AppConfigData } from "@/hooks/useAppConfig"
 
 export default function UserSettingsForm() {
   const { settings, updateSettings } = useUserSettings()
+  const { exportConfig, importConfig } = useAppConfig()
   const [name, setName] = useState(settings.name)
   const [taxPercentage, setTaxPercentage] = useState(
     settings.taxPercentage.toString()
   )
   const [isSaved, setIsSaved] = useState(false)
+  const [importStatus, setImportStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle")
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,6 +41,62 @@ export default function UserSettingsForm() {
 
     setIsSaved(true)
     setTimeout(() => setIsSaved(false), 2000)
+  }
+
+  const handleExport = () => {
+    const config = exportConfig()
+    const blob = new Blob([JSON.stringify(config, null, 2)], {
+      type: "application/json",
+    })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `portafoglio-config-${new Date().toISOString().split("T")[0]}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      try {
+        const config = JSON.parse(
+          event.target?.result as string
+        ) as AppConfigData
+        const success = importConfig(config)
+        setImportStatus(success ? "success" : "error")
+        setTimeout(() => setImportStatus("idle"), 2000)
+        if (success) {
+          window.location.reload()
+        }
+      } catch {
+        setImportStatus("error")
+        setTimeout(() => setImportStatus("idle"), 2000)
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = ""
+  }
+
+  const handleReset = () => {
+    if (
+      confirm(
+        "Sei sicuro di voler eliminare tutti i dati? Questa azione non può essere annullata."
+      )
+    ) {
+      localStorage.removeItem("investments_data")
+      localStorage.removeItem("user_settings")
+      window.location.reload()
+    }
   }
 
   return (
@@ -109,6 +172,74 @@ export default function UserSettingsForm() {
           )}
         </Button>
       </form>
+
+      <div className="my-16 flex flex-col gap-2">
+        <h3 className="px-1 text-sm font-medium text-muted-foreground">Dati</h3>
+        <ItemGroup>
+          <Item variant="muted" asChild>
+            <button onClick={handleExport} type="button">
+              <ItemContent className="flex flex-row items-center justify-between">
+                <div className="flex flex-col">
+                  <ItemTitle>Esporta configurazione</ItemTitle>
+                  <ItemDescription>
+                    Scarica tutti i dati in formato JSON
+                  </ItemDescription>
+                </div>
+                <Download className="h-5 w-5 text-muted-foreground" />
+              </ItemContent>
+            </button>
+          </Item>
+
+          <Item variant="muted" asChild>
+            <button onClick={handleImportClick} type="button">
+              <ItemContent className="flex flex-row items-center justify-between">
+                <div className="flex flex-col">
+                  <ItemTitle>Importa configurazione</ItemTitle>
+                  <ItemDescription>
+                    Carica un file di configurazione
+                  </ItemDescription>
+                </div>
+                <Upload className="h-5 w-5 text-muted-foreground" />
+              </ItemContent>
+            </button>
+          </Item>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            onChange={handleImport}
+            className="hidden"
+          />
+
+          <Item variant="muted" asChild>
+            <button onClick={handleReset} type="button">
+              <ItemContent className="flex flex-row items-center justify-between">
+                <div className="flex flex-col">
+                  <ItemTitle className="text-destructive">
+                    Elimina tutti i dati
+                  </ItemTitle>
+                  <ItemDescription>
+                    Resetta l'app ai valori predefiniti
+                  </ItemDescription>
+                </div>
+                <Trash2 className="h-5 w-5 text-destructive" />
+              </ItemContent>
+            </button>
+          </Item>
+        </ItemGroup>
+
+        {importStatus === "success" && (
+          <p className="px-1 text-sm text-green-600">
+            Configurazione importata con successo!
+          </p>
+        )}
+        {importStatus === "error" && (
+          <p className="px-1 text-sm text-destructive">
+            Errore durante l'importazione del file
+          </p>
+        )}
+      </div>
     </div>
   )
 }
