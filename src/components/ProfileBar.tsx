@@ -1,5 +1,4 @@
 import AvatarDemo from "@/components/customized/avatar/avatar-01"
-import SettingsContent from "@/components/SettingsContent"
 import { RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -40,17 +39,9 @@ export default function ProfileBar({ profileName }: ProfileBarProps) {
             <AvatarDemo profileName={profileName} />
           </AlertDialogTrigger>
           <AlertDialogContent className="sm:max-w-lg!">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-2xl font-semibold tracking-[-0.015em]">
-                Impostazioni
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-[15px]">
-                Configura la tua app
-              </AlertDialogDescription>
-            </AlertDialogHeader>
             <UserSettingsForm />
             <AlertDialogFooter className="-mt-4">
-              <AlertDialogCancel>Chiudi</AlertDialogCancel>
+              <AlertDialogCancel className="w-full">Chiudi</AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

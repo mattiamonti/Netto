@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/navigation-menu"
 
 interface NavigationMenuAppProps {
-  activeTab?: "home" | "settings"
-  onNavigate?: (tab: "home" | "settings") => void
+  activeTab?: "home" | "strumenti" | "settings"
+  onNavigate?: (tab: "home" | "strumenti" | "settings") => void
 }
 
 const navigationMenuItems = [
