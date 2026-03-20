@@ -1,4 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#ffffff" rx="100"/>
-  <text x="256" y="320" font-family="system-ui, -apple-system, sans-serif" font-size="200" font-weight="bold" fill="#000" text-anchor="middle">P</text>
+<svg width="443" height="354" viewBox="0 0 443 354" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M435.988 0.361333C439.565 -1.06124 443.34 1.92128 442.784 5.72988L432.772 74.2846C432.215 78.0932 427.745 79.8714 424.725 77.4854L370.361 34.537C367.34 32.151 368.036 27.3903 371.612 25.9677L435.988 0.361333Z" fill="url(#paint0_linear_1002_52)"/>
+<path d="M191.88 18.9699C203.544 0.479218 232.31 7.92032 233.353 29.9633L244.501 265.622L410.914 16.2268C414.745 10.4845 422.507 8.93575 428.249 12.7674C433.992 16.5992 435.54 24.3607 431.709 30.1032L261.079 285.82C249.028 303.88 220.915 296.082 219.889 274.394L208.77 39.3675L23.207 347.226C19.6431 353.138 11.961 355.042 6.04855 351.478C0.136158 347.914 -1.76745 340.232 1.79632 334.319L191.608 19.412L191.88 18.9699Z" fill="url(#paint1_linear_1002_52)"/>
+<defs>
+<linearGradient id="paint0_linear_1002_52" x1="444.035" y1="-2.83945" x2="382.045" y2="75.6281" gradientUnits="userSpaceOnUse">
+<stop stop-color="#6CDD8F"/>
+<stop offset="1" stop-color="#66D58F"/>
+</linearGradient>
+<linearGradient id="paint1_linear_1002_52" x1="4.42642" y1="330.529" x2="410.967" y2="10.0439" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0F607B"/>
+<stop offset="1" stop-color="#6BDC90"/>
+</linearGradient>
+</defs>
 </svg>
