@@ -30,34 +30,25 @@ function InvestmentValue({
 }
 
 interface StockDetailsProps {
-  ticker: string
-  name: string
-  value: number
+  currentPrice: number
   quantity: number
-  priceBougth: number
+  boughtPrice: number
+  investedCapital: number
+  currentCapital: number
+  grossProfit: number
+  netProfit: number
 }
 
 export default function StockDetails({
-  ticker,
-  name,
-  value,
+  currentPrice: value,
   quantity,
-  priceBougth,
+  boughtPrice: priceBougth,
+  investedCapital,
+  currentCapital: actualCapital,
+  grossProfit,
+  netProfit,
 }: StockDetailsProps) {
   const { settings } = useUserSettings()
-  const capital = priceBougth * quantity
-  const currentValue = value * quantity
-
-  const grossProfit = currentValue - capital
-  let netProfit = 0
-  if (grossProfit > 0) {
-    netProfit = grossProfit - grossProfit * (settings.taxPercentage / 100)
-  } else {
-    netProfit = grossProfit
-  }
-  const netCapital = capital + netProfit
-  const netPercentage = capital ? (netProfit / capital) * 100 : 0
-
   return (
     <div>
       <div className="-mx-4 flex min-w-full flex-col gap-4">
@@ -75,7 +66,9 @@ export default function StockDetails({
                 <Wallet className="h-4 w-4" />
                 <span className="text-xs font-medium">Investito</span>
               </div>
-              <p className="text-lg font-semibold">{capital.toFixed(2)} €</p>
+              <p className="text-lg font-semibold">
+                {actualCapital.toFixed(2)} €
+              </p>
               <p className="text-xs text-muted-foreground">{quantity} quote</p>
             </Card>
             <Card className="flex h-fit gap-4 p-4">
@@ -123,13 +116,14 @@ export default function StockDetails({
                   <span className="text-sm font-medium">Netto in tasca</span>
                   <div className="text-right">
                     <p className="text-lg font-semibold">
-                      {netCapital.toFixed(2)} €
+                      {(investedCapital + netProfit).toFixed(2)} €
                     </p>
                     <p
                       className={`text-xs ${netProfit >= 0 ? "text-emerald-600" : "text-red-600"}`}
                     >
                       {netProfit >= 0 ? "+" : ""}
-                      {netProfit.toFixed(2)} € ({netPercentage.toFixed(2)}%)
+                      {netProfit.toFixed(2)} € (
+                      {((netProfit / investedCapital) * 100).toFixed(2)}%)
                     </p>
                   </div>
                 </div>

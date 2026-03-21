@@ -45,7 +45,7 @@ export default function StockPreview({
     <Item variant="outline">
       <ItemContent className="flex flex-col gap-2 md:flex-row md:justify-between">
         <div>
-          <ItemTitle>{name}</ItemTitle>
+          <ItemTitle className="text-left">{name}</ItemTitle>
           <ItemDescription>{ticker}</ItemDescription>
         </div>
         <div className="flex flex-row items-center gap-2">

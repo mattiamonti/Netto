@@ -9,7 +9,7 @@ import TotalPanicSellSection from "./components/TotalPanicSellSection"
 import { useInvestments } from "@/hooks/useInvestments"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import UserSettingsForm from "@/components/UserSettingsForm"
-import StockNewItem from "@/components/StockNewItem"
+import StockItem from "@/components/StockItem"
 
 export function App() {
   const [activeTab, setActiveTab] = useState<"home" | "settings" | "strumenti">(
@@ -68,11 +68,11 @@ export function App() {
           ) : (
             <div className="flex flex-col gap-2">
               {etfs.map((investment) => (
-                <StockNewItem
+                <StockItem
                   key={investment.id}
                   ticker={investment.ticker}
-                  priceBougth={investment.priceBought}
-                  quantityInput={investment.quantity}
+                  boughtPrice={investment.priceBought}
+                  quantity={investment.quantity}
                 />
               ))}
             </div>
@@ -91,11 +91,11 @@ export function App() {
           ) : (
             <div className="flex flex-col gap-2">
               {stocks.map((investment) => (
-                <StockNewItem
+                <StockItem
                   key={investment.id}
                   ticker={investment.ticker}
-                  priceBougth={investment.priceBought}
-                  quantityInput={investment.quantity}
+                  boughtPrice={investment.priceBought}
+                  quantity={investment.quantity}
                 />
               ))}
             </div>

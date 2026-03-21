@@ -28,32 +28,30 @@ import StockPreview from "@/components/StockPreview"
 
 interface StockNewItemProps {
   ticker: string
-  priceBougth: number
-  quantityInput: number
+  boughtPrice: number
+  quantity: number
 }
 
-export default function StockNewItem({
+export default function StockItem({
   ticker,
-  priceBougth,
-  quantityInput,
+  boughtPrice,
+  quantity,
 }: StockNewItemProps) {
   const { settings } = useUserSettings()
   const { price, name, loading } = useStockPrice(ticker)
   if (!price && !loading) {
     return null
   }
-  const capital = priceBougth * quantityInput
-  const currentValue = price * quantityInput
+  const investedCapital = boughtPrice * quantity
+  const currentCapital = price ? price * quantity : 0
 
-  const grossProfit = currentValue - capital
+  const grossProfit = currentCapital - investedCapital
   let netProfit = 0
   if (grossProfit > 0) {
     netProfit = grossProfit - grossProfit * (settings.taxPercentage / 100)
   } else {
     netProfit = grossProfit
   }
-  const netCapital = capital + netProfit
-  const netPercentage = capital ? (netProfit / capital) * 100 : 0
 
   return (
     <AlertDialog>
@@ -62,8 +60,8 @@ export default function StockNewItem({
           ticker={ticker}
           name={name}
           price={price}
-          priceBougth={priceBougth}
-          quantityInput={quantityInput}
+          priceBougth={boughtPrice}
+          quantityInput={quantity}
           loading={loading}
         />
       </AlertDialogTrigger>
@@ -79,9 +77,13 @@ export default function StockNewItem({
         <StockDetails
           ticker={ticker}
           name={name}
-          value={price}
-          priceBougth={priceBougth}
-          quantity={quantityInput}
+          currentPrice={price}
+          boughtPrice={boughtPrice}
+          quantity={quantity}
+          investedCapital={investedCapital}
+          currentCapital={currentCapital}
+          grossProfit={grossProfit}
+          netProfit={netProfit}
         />
 
         <AlertDialogFooter>
