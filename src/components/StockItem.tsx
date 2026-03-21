@@ -45,8 +45,8 @@ export default function StockItem({
       <AlertDialogTrigger>
         <StockPreview
           ticker={ticker}
-          name={name}
-          price={price}
+          name={name ? name : "..."}
+          price={price ? price : 0}
           priceBougth={boughtPrice}
           quantityInput={quantity}
           loading={loading}
@@ -62,9 +62,7 @@ export default function StockItem({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <StockDetails
-          ticker={ticker}
-          name={name}
-          currentPrice={price}
+          currentPrice={price ? price : 0}
           boughtPrice={boughtPrice}
           quantity={quantity}
           investedCapital={investedCapital}
