@@ -1,7 +1,6 @@
 import { useState } from "react"
 import TotalValueCard from "@/components/TotalValueCard"
 import ProfileBar from "@/components/ProfileBar"
-import Stock from "@/components/Stock"
 import NavigationMenuApp from "@/components/NavigationMenuApp"
 import SettingsContent from "@/components/SettingsContent"
 import PWAInstallPrompt from "@/components/PWAInstallPrompt"
@@ -9,7 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import TotalPanicSellSection from "./components/TotalPanicSellSection"
 import { useInvestments } from "@/hooks/useInvestments"
 import { useUserSettings } from "@/hooks/useUserSettings"
-import UserSettingsForm from "./components/UserSettingsForm"
+import UserSettingsForm from "@/components/UserSettingsForm"
+import StockNewItem from "@/components/StockNewItem"
 
 export function App() {
   const [activeTab, setActiveTab] = useState<"home" | "settings" | "strumenti">(
@@ -68,7 +68,7 @@ export function App() {
           ) : (
             <div className="flex flex-col gap-2">
               {etfs.map((investment) => (
-                <Stock
+                <StockNewItem
                   key={investment.id}
                   ticker={investment.ticker}
                   priceBougth={investment.priceBought}
@@ -91,7 +91,7 @@ export function App() {
           ) : (
             <div className="flex flex-col gap-2">
               {stocks.map((investment) => (
-                <Stock
+                <StockNewItem
                   key={investment.id}
                   ticker={investment.ticker}
                   priceBougth={investment.priceBought}
