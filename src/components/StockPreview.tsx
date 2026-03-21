@@ -7,8 +7,12 @@ import {
   ItemTitle,
 } from "@/components/ui/item"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
-import SpinnerCircle from "./customized/spinner/spinner-02"
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip"
+import SpinnerCircle from "@/components/customized/spinner/spinner-02"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface StockPreviewProps {
   name: string
@@ -17,6 +21,19 @@ interface StockPreviewProps {
   priceBougth: number
   quantityInput: number
   loading: boolean
+}
+
+function OpenDetails() {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild className="cursor-pointer">
+        <Info className="h-4 w-4" />
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>Dettagli strumento</p>
+      </TooltipContent>
+    </Tooltip>
+  )
 }
 
 export default function StockPreview({
@@ -51,14 +68,7 @@ export default function StockPreview({
         </div>
       </ItemContent>
       <ItemActions className="">
-        <Tooltip>
-          <TooltipTrigger asChild className="cursor-pointer">
-            <Info className="h-4 w-4" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Dettagli strumento</p>
-          </TooltipContent>
-        </Tooltip>
+        <OpenDetails />
       </ItemActions>
     </Item>
   )
