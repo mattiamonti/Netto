@@ -1,4 +1,4 @@
-import { Info, Wallet, ArrowRight, DollarSign } from "lucide-react"
+import { Info } from "lucide-react"
 import {
   Item,
   ItemActions,
@@ -6,21 +6,7 @@ import {
   ItemDescription,
   ItemTitle,
 } from "@/components/ui/item"
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-  AlertDialogDescription,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
-import { useUserSettings } from "@/hooks/useUserSettings"
-import { useStockPrice } from "@/hooks/useStockPrice"
 import SpinnerCircle from "./customized/spinner/spinner-02"
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip"
 

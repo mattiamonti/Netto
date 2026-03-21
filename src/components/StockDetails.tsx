@@ -1,5 +1,4 @@
-import { Info, Wallet, ArrowRight, DollarSign } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Wallet, ArrowRight, DollarSign } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 import { useUserSettings } from "@/hooks/useUserSettings"
