@@ -1,20 +1,16 @@
 import AvatarDemo from "@/components/customized/avatar/avatar-01"
 import { RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import UserSettingsForm from "./UserSettingsForm"
 
 interface ProfileBarProps {
   profileName: string
+  onNavigate: (tab: "home" | "strumenti" | "settings") => void
 }
 
-export default function ProfileBar({ profileName }: ProfileBarProps) {
+export default function ProfileBar({
+  profileName,
+  onNavigate,
+}: ProfileBarProps) {
   const handleRefresh = () => {
     window.location.reload()
   }
@@ -31,17 +27,14 @@ export default function ProfileBar({ profileName }: ProfileBarProps) {
         >
           <RefreshCw className="h-5 w-5" />
         </Button>
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <AvatarDemo profileName={profileName} />
-          </AlertDialogTrigger>
-          <AlertDialogContent className="sm:max-w-lg!">
-            <UserSettingsForm />
-            <AlertDialogFooter className="-mt-4">
-              <AlertDialogCancel className="w-full">Chiudi</AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <div
+          onClick={(e) => {
+            e.preventDefault()
+            onNavigate?.("settings")
+          }}
+        >
+          <AvatarDemo profileName={profileName} />
+        </div>
       </div>
     </div>
   )

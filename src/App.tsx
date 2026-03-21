@@ -25,7 +25,7 @@ export function App() {
   if (activeTab === "strumenti") {
     return (
       <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
-        <ProfileBar profileName={profileName} />
+        <ProfileBar profileName={profileName} onNavigate={setActiveTab} />
         <SettingsContent />
         <NavigationMenuApp activeTab={activeTab} onNavigate={setActiveTab} />
       </div>
@@ -35,7 +35,7 @@ export function App() {
   if (activeTab === "settings") {
     return (
       <div className="mx-auto flex min-h-svh max-w-2xl flex-col gap-6 p-6">
-        <ProfileBar profileName={profileName} />
+        <ProfileBar profileName={profileName} onNavigate={setActiveTab} />
         <UserSettingsForm />
         <NavigationMenuApp activeTab={activeTab} onNavigate={setActiveTab} />
       </div>
@@ -44,7 +44,7 @@ export function App() {
 
   return (
     <div className="mx-auto flex h-full max-w-2xl flex-col gap-6 overflow-y-hidden p-6">
-      <ProfileBar profileName={profileName} />
+      <ProfileBar profileName={profileName} onNavigate={setActiveTab} />
 
       <PWAInstallPrompt />
 

@@ -60,7 +60,7 @@ export default function TotalPanicSellSection({
           ) : (
             <Plus className="h-4 w-4" />
           )}
-          Simulazione vendita totale
+          Simulazione vendita immediata
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
