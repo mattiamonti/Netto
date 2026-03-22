@@ -9,7 +9,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Netto" />
@@ -19,14 +19,17 @@
     />
     <link rel="manifest" href="/Netto/manifest.webmanifest" />
     <title>Netto</title>
-    <script type="module" crossorigin src="/Netto/assets/index-DLh45x8h.js"></script>
-    <link rel="stylesheet" crossorigin href="/Netto/assets/index-tfOCfmUW.css">
-  <link rel="manifest" href="/Netto/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/Netto/registerSW.js"></script>
-<meta name="theme-color" content="#ffffff">
-<link rel="icon" href="/Netto/favicon.ico" sizes="48x48">
-<link rel="icon" href="/Netto/icon.svg" sizes="any" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/Netto/apple-touch-icon-180x180.png"></head>
+    <script
+      src="https://unpkg.com/ios-pwa-splash@1.0.0/cdn.min.js"
+      type="text/javascript"
+    ></script>
+    <script type="module" crossorigin src="/Netto/assets/index-DEFdXSve.js"></script>
+    <link rel="stylesheet" crossorigin href="/Netto/assets/index-BpbcR578.css">
+  <link rel="manifest" href="/Netto/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/Netto/registerSW.js"></script></head>
   <body>
+    <script>
+      iosPWASplash("/Netto/logotype.svg", "#000000")
+    </script>
     <div id="root"></div>
   </body>
 </html>
