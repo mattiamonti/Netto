@@ -4,7 +4,7 @@ const CACHE_SECONDS = 600
 const CACHE_BASE_KEY = "yahoo_finance_cache_"
 const PROXY = "https://corsproxy.io?"
 const BASE_URL = "https://query2.finance.yahoo.com/v8/finance/chart/"
-const QUERY = "?interval=1d&range=1mo"
+const QUERY = "?interval=1d&range=1y"
 
 interface YahooFinanceData {
   price: number | null
