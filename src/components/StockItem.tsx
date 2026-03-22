@@ -26,7 +26,7 @@ export default function StockItem({
   quantity,
 }: StockNewItemProps) {
   const { settings } = useUserSettings()
-  const { price, name, loading } = useStockPrice(ticker)
+  const { price, name, loading, historicalMonthData } = useStockPrice(ticker)
   if (!price && !loading) {
     return null
   }
@@ -40,6 +40,15 @@ export default function StockItem({
   } else {
     netProfit = grossProfit
   }
+
+  const chartData = [
+    { timestamp: 1, closingPrice: 186 },
+    { timestamp: 2, closingPrice: 305 },
+    { timestamp: 3, closingPrice: 237 },
+    { timestamp: 4, closingPrice: 73 },
+    { timestamp: 5, closingPrice: 209 },
+    { timestamp: 6, closingPrice: 214 },
+  ]
 
   return (
     <Drawer>
@@ -68,14 +77,11 @@ export default function StockItem({
           currentCapital={currentCapital}
           grossProfit={grossProfit}
           netProfit={netProfit}
+          chartData={historicalMonthData}
         />
 
         <DrawerFooter>
-          <DrawerClose>
-            <Button variant="secondary" className="w-full sm:w-auto">
-              Chiudi
-            </Button>
-          </DrawerClose>
+          <DrawerClose>Chiudi</DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

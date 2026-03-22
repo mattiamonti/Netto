@@ -2,6 +2,7 @@ import { Wallet, ArrowRight, DollarSign } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 import { useUserSettings } from "@/hooks/useUserSettings"
+import StockChart from "@/components/StockChart"
 
 interface InvestmentValueProps {
   value: number
@@ -139,6 +140,7 @@ interface StockDetailsProps {
   currentCapital: number
   grossProfit: number
   netProfit: number
+  chartData: { timestamp: number; closingPrice: number }[]
 }
 
 export default function StockDetails({
@@ -149,6 +151,7 @@ export default function StockDetails({
   currentCapital,
   grossProfit,
   netProfit,
+  chartData,
 }: StockDetailsProps) {
   const { settings } = useUserSettings()
   return (
@@ -172,6 +175,7 @@ export default function StockDetails({
             netProfit={netProfit}
             investedCapital={investedCapital}
           />
+          <StockChart chartData={chartData} />
         </div>
       </div>
     </div>
