@@ -153,13 +153,13 @@ export default function StockDetails({
   const { settings } = useUserSettings()
   return (
     <div>
-      <div className="-mx-4 flex min-w-full flex-col gap-4">
+      <div className="flex min-w-full flex-col gap-4">
         <InvestmentValue
           value={currentPrice}
           quantity={quantity}
           pricebought={boughtPrice}
         />
-        <div className="max-h-[40vh] space-y-4 overflow-y-scroll">
+        <div className="mx-4 max-h-[40vh] space-y-4 overflow-y-scroll">
           <InvestmentDetails
             currentCapital={currentCapital}
             boughtPrice={boughtPrice}

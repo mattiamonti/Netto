@@ -1,17 +1,18 @@
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-  AlertDialogDescription,
-} from "@/components/ui/alert-dialog"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { useStockPrice } from "@/hooks/useStockPrice"
 import StockDetails from "@/components/StockDetails"
 import StockPreview from "@/components/StockPreview"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button"
 
 interface StockNewItemProps {
   ticker: string
@@ -41,8 +42,8 @@ export default function StockItem({
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger>
+    <Drawer>
+      <DrawerTrigger>
         <StockPreview
           ticker={ticker}
           name={name ? name : "..."}
@@ -51,16 +52,14 @@ export default function StockItem({
           quantityInput={quantity}
           loading={loading}
         />
-      </AlertDialogTrigger>
-      <AlertDialogContent className="sm:max-w-lg!">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="w-full truncate text-2xl font-semibold tracking-[-0.015em]">
+      </DrawerTrigger>
+      <DrawerContent className="sm:mx-auto sm:max-w-2xl!">
+        <DrawerHeader>
+          <DrawerTitle className="w-full truncate text-2xl font-semibold tracking-[-0.015em]">
             {name}
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-md">
-            {ticker}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+          </DrawerTitle>
+          <DrawerDescription className="text-md">{ticker}</DrawerDescription>
+        </DrawerHeader>
         <StockDetails
           currentPrice={price ? price : 0}
           boughtPrice={boughtPrice}
@@ -71,10 +70,14 @@ export default function StockItem({
           netProfit={netProfit}
         />
 
-        <AlertDialogFooter>
-          <AlertDialogCancel>Chiudi</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+        <DrawerFooter>
+          <DrawerClose>
+            <Button variant="secondary" className="w-full sm:w-auto">
+              Chiudi
+            </Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   )
 }
