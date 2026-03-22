@@ -58,7 +58,9 @@ function DisplayChart(
     },
   } satisfies ChartConfig
 
-  if (chartData.at(0)?.closingPrice > chartData.at(-1)?.closingPrice) {
+  if (
+    (chartData.at(0)?.closingPrice ?? 0) > (chartData.at(-1)?.closingPrice ?? 0)
+  ) {
     chartConfig.desktop.color = RED_COLOR
   }
   return (
