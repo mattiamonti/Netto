@@ -13,13 +13,27 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: "auto",
-      includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
+      includeAssets: [
+        "favicon.ico",
+        "apple-touch-icon.png",
+        "masked-icon.svg",
+        "apple-touch-icon-180x180.png",
+        "maskable-icon-512x512.png",
+        "icon.svg",
+        "pwa-64x64.png",
+        "pwa-192x192.png",
+        "pwa-512x512.png",
+      ],
+      pwaAssets: {
+        disabled: false,
+        config: true, // Usa il file pwa-assets.config.js se presente
+      },
       manifest: {
         name: "Netto - effective ETFs & Stock tracker",
         short_name: "Netto",
         description: "Traccia i tuoi investimenti in ETF e Stock",
         theme_color: "#ffffff",
-        background_color: "#ffffff",
+        background_color: "#1a1a1a",
         display: "standalone",
         orientation: "portrait",
         scope: "/",
@@ -40,6 +54,27 @@ export default defineConfig({
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
+          },
+          {
+            src: "pwa-64x64.png",
+            sizes: "64x64",
+            type: "image/png",
+          },
+          {
+            src: "pwa-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+          {
+            src: "maskable-icon-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },

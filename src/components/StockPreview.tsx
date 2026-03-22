@@ -45,7 +45,7 @@ export default function StockPreview({
   loading,
 }: StockPreviewProps) {
   return (
-    <Item variant="outline">
+    <Item variant="outline" className="transition-all active:scale-[0.98]">
       <ItemContent className="flex flex-col gap-2 md:flex-row md:justify-between">
         <div>
           <ItemTitle className="text-left">{name}</ItemTitle>
