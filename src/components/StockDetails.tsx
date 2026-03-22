@@ -163,6 +163,7 @@ export default function StockDetails({
           pricebought={boughtPrice}
         />
         <div className="mx-4 max-h-[45vh] space-y-4 overflow-y-scroll sm:max-h-[49vh]">
+          <StockChart chartData={chartData} />
           <InvestmentDetails
             currentCapital={currentCapital}
             boughtPrice={boughtPrice}
@@ -175,7 +176,6 @@ export default function StockDetails({
             netProfit={netProfit}
             investedCapital={investedCapital}
           />
-          <StockChart chartData={chartData} />
         </div>
       </div>
     </div>
