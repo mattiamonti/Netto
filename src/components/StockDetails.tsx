@@ -162,7 +162,7 @@ export default function StockDetails({
           quantity={quantity}
           pricebought={boughtPrice}
         />
-        <div className="mx-4 max-h-[45vh] space-y-4 overflow-y-scroll sm:max-h-[50vh]">
+        <div className="mx-4 max-h-[45vh] space-y-4 overflow-y-scroll sm:max-h-[49vh]">
           <InvestmentDetails
             currentCapital={currentCapital}
             boughtPrice={boughtPrice}

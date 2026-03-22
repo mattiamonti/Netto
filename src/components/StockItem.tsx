@@ -12,7 +12,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button"
 
 interface StockNewItemProps {
   ticker: string
@@ -40,15 +39,6 @@ export default function StockItem({
   } else {
     netProfit = grossProfit
   }
-
-  const chartData = [
-    { timestamp: 1, closingPrice: 186 },
-    { timestamp: 2, closingPrice: 305 },
-    { timestamp: 3, closingPrice: 237 },
-    { timestamp: 4, closingPrice: 73 },
-    { timestamp: 5, closingPrice: 209 },
-    { timestamp: 6, closingPrice: 214 },
-  ]
 
   return (
     <Drawer>
@@ -81,7 +71,9 @@ export default function StockItem({
         />
 
         <DrawerFooter>
-          <DrawerClose>Chiudi</DrawerClose>
+          <DrawerClose className="rounded-full bg-muted px-4 py-2">
+            Chiudi
+          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
