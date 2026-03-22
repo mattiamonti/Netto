@@ -5,11 +5,13 @@ const STORAGE_KEY = "user_settings"
 export interface UserSettings {
   name: string
   taxPercentage: number
+  anonymousData: boolean
 }
 
 const DEFAULT_SETTINGS: UserSettings = {
   name: "",
   taxPercentage: 26,
+  anonymousData: false,
 }
 
 function loadSettingsFromStorage(): UserSettings {

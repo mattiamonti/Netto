@@ -8,6 +8,7 @@ import {
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 import type { Investment } from "@/types/investment"
 import { getCachedPrice } from "@/hooks/useStockPrice"
+import { useUserSettings } from "@/hooks/useUserSettings"
 
 interface TotalValueCardProps {
   investments: Investment[]
@@ -29,6 +30,7 @@ function calculateTotalValue(investments: Investment[]) {
 }
 
 export default function TotalValueCard({ investments }: TotalValueCardProps) {
+  const { settings } = useUserSettings()
   const { total: totalPrice, invested: totalInvested } =
     calculateTotalValue(investments)
 
@@ -45,13 +47,20 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="mx-auto flex flex-col px-8">
-        <CardTitle className="text-5xl font-medium tracking-tight md:text-6xl">
+        <CardTitle className="relative text-5xl font-medium tracking-tight md:text-6xl">
           <span className="text-2xl text-muted-foreground md:text-3xl">€ </span>
-          {totalPrice !== null ? totalPrice.toFixed(2) : "0.00"}
+          {!settings.anonymousData && totalPrice !== null
+            ? totalPrice.toFixed(2)
+            : "0.00"}
         </CardTitle>
         {grossProfit !== null && percentage !== null && (
           <div className="mt-2 flex justify-center">
-            <GainAndLossBadge profit={grossProfit} percentage={percentage} />
+            {!settings.anonymousData && (
+              <GainAndLossBadge profit={grossProfit} percentage={percentage} />
+            )}
+            {settings.anonymousData && (
+              <GainAndLossBadge profit={0} percentage={0} />
+            )}
           </div>
         )}
       </CardContent>

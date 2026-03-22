@@ -13,6 +13,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useUserSettings } from "@/hooks/useUserSettings"
 
 interface StockPreviewProps {
   name: string
@@ -44,6 +45,7 @@ export default function StockPreview({
   quantityInput,
   loading,
 }: StockPreviewProps) {
+  const { settings } = useUserSettings()
   return (
     <Item variant="outline" className="transition-all active:scale-[0.98]">
       <ItemContent className="flex flex-col gap-2 md:flex-row md:justify-between">
@@ -56,7 +58,10 @@ export default function StockPreview({
             <SpinnerCircle />
           ) : (
             <div className="text-lg text-nowrap">
-              {price && (price * quantityInput).toFixed(2) + " €"}
+              {!settings.anonymousData &&
+                price &&
+                (price * quantityInput).toFixed(2) + " €"}
+              {settings.anonymousData && "XXX.XX"}
             </div>
           )}
           <GainAndLossBadge

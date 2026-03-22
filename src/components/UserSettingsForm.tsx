@@ -12,11 +12,39 @@ import {
 import { Check, Download, Upload, Trash2 } from "lucide-react"
 import { Button } from "./ui/button"
 import type { AppConfigData } from "@/hooks/useAppConfig"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
+
+interface SettingSwitchProps {
+  label: string
+  description: string
+  id: string
+  checked: boolean
+  onSwitch: (val: boolean) => void
+}
+function SettingSwitch({
+  label,
+  description,
+  id,
+  checked,
+  onSwitch,
+}: SettingSwitchProps) {
+  return (
+    <div className="flex min-w-full items-center justify-between gap-4">
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="notifications">{label}</Label>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      <Switch id={id} checked={checked} onCheckedChange={onSwitch} />
+    </div>
+  )
+}
 
 export default function UserSettingsForm() {
   const { settings, updateSettings } = useUserSettings()
   const { exportConfig, importConfig } = useAppConfig()
   const [name, setName] = useState(settings.name)
+  const [anonymousData, setAnonymousData] = useState(settings.anonymousData)
   const [taxPercentage, setTaxPercentage] = useState(
     settings.taxPercentage.toString()
   )
@@ -37,6 +65,7 @@ export default function UserSettingsForm() {
     updateSettings({
       name: name.trim(),
       taxPercentage: tax,
+      anonymousData: anonymousData,
     })
 
     setIsSaved(true)
@@ -155,6 +184,25 @@ export default function UserSettingsForm() {
                   onChange={(e) => setTaxPercentage(e.target.value)}
                   placeholder="26"
                   className="h-fit w-fit text-right shadow-none focus-visible:ring-0"
+                />
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="px-1 text-sm font-medium text-muted-foreground">
+            Dati
+          </h3>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent className="flex flex-row items-center justify-between">
+                <SettingSwitch
+                  id="anonymousData"
+                  label="Dati anonimi"
+                  description="Attiva l'anonimizzazione dei dati, così non vengono mostrate le tue cifre."
+                  checked={anonymousData}
+                  onSwitch={(val) => setAnonymousData(val)}
                 />
               </ItemContent>
             </Item>
