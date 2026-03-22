@@ -9,7 +9,7 @@ export interface UserSettings {
 
 const DEFAULT_SETTINGS: UserSettings = {
   name: "",
-  taxPercentage: 0.26,
+  taxPercentage: 26,
 }
 
 function loadSettingsFromStorage(): UserSettings {
