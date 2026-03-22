@@ -62,7 +62,7 @@ export default function StockItem({
           loading={loading}
         />
       </DrawerTrigger>
-      <DrawerContent className="sm:mx-auto sm:max-w-2xl!">
+      <DrawerContent className="h-5/6 sm:mx-auto sm:max-w-2xl!">
         <DrawerHeader>
           <DrawerTitle className="w-full truncate text-2xl font-semibold tracking-[-0.015em]">
             {name}
