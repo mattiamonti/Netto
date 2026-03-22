@@ -9,7 +9,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="Netto" />
@@ -19,8 +19,15 @@
     />
     <link rel="manifest" href="/Netto/manifest.webmanifest" />
     <title>Netto</title>
+    <script
+      src="https://unpkg.com/ios-pwa-splash@1.0.0/cdn.min.js"
+      type="text/javascript"
+    ></script>
   </head>
   <body>
+    <script>
+      iosPWASplash("/Netto/logotype.svg", "#000000")
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -23,17 +23,15 @@ export default defineConfig({
         "pwa-64x64.png",
         "pwa-192x192.png",
         "pwa-512x512.png",
+        "splash-screen.png",
+        "logotype.svg",
       ],
-      pwaAssets: {
-        disabled: false,
-        config: true, // Usa il file pwa-assets.config.js se presente
-      },
       manifest: {
         name: "Netto - effective ETFs & Stock tracker",
         short_name: "Netto",
         description: "Traccia i tuoi investimenti in ETF e Stock",
-        theme_color: "#ffffff",
-        background_color: "#1a1a1a",
+        theme_color: "#000000",
+        background_color: "#000000",
         display: "standalone",
         orientation: "portrait",
         scope: "/",
@@ -61,20 +59,20 @@ export default defineConfig({
             type: "image/png",
           },
           {
-            src: "pwa-192x192.png",
-            sizes: "192x192",
-            type: "image/png",
-          },
-          {
-            src: "pwa-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-          {
             src: "maskable-icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",
+          },
+          {
+            src: "splash-screen.png",
+            sizes: "390x844",
+            type: "image/png",
+          },
+          {
+            src: "logotype.svg",
+            sizes: "390x844",
+            type: "image/svg",
           },
         ],
       },
