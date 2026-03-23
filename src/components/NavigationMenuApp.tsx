@@ -46,7 +46,7 @@ export default function NavigationMenuApp({
             <NavigationMenuLink
               active={activeTab === item.id}
               className={cn(
-                "group relative flex flex-col items-center justify-center gap-1 px-12 py-3 text-xs font-medium transition-colors",
+                "group relative flex flex-col items-center justify-center gap-1 px-10 py-3 text-xs font-medium transition-colors",
                 "data-[active=true]:text-primary",
                 "hover:text-primary"
               )}
