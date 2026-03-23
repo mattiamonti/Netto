@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, type ChangeEvent } from "react"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { useAppConfig } from "@/hooks/useAppConfig"
 import { Input } from "@/components/ui/input"
@@ -8,8 +8,30 @@ import {
   ItemDescription,
   ItemTitle,
   ItemGroup,
+  ItemActions,
 } from "@/components/ui/item"
-import { Check, Download, Upload, Trash2 } from "lucide-react"
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog"
+import {
+  Check,
+  Download,
+  Upload,
+  Trash2,
+  Edit2,
+  Edit,
+  MoveLeft,
+  ArrowBigRightDash,
+  ChevronRight,
+} from "lucide-react"
 import { Button } from "./ui/button"
 import type { AppConfigData } from "@/hooks/useAppConfig"
 import { Label } from "@/components/ui/label"
@@ -37,6 +59,88 @@ function SettingSwitch({
       </div>
       <Switch id={id} checked={checked} onCheckedChange={onSwitch} />
     </div>
+  )
+}
+
+interface TextDataFieldProps {
+  value: string
+  title: string
+  description: string
+  onChange: (e: ChangeEvent<HTMLInputElement, HTMLInputElement>) => void
+  inputType: string
+  inputId: string
+  inputMin: string
+  inputMax: string
+  inputPlaceholder: string
+  inputStep: string
+  inputMode:
+    | "search"
+    | "text"
+    | "none"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | undefined
+}
+function TextDataField({
+  value,
+  title,
+  description,
+  onChange,
+  inputId,
+  inputType,
+  inputMin,
+  inputMax,
+  inputStep,
+  inputMode,
+  inputPlaceholder,
+}: TextDataFieldProps) {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Item variant="muted" className="group cursor-pointer">
+          <ItemContent className="flex flex-row items-center justify-between">
+            <div className="flex flex-col">
+              <ItemTitle>{title}</ItemTitle>
+              <ItemDescription className="hidden sm:block">
+                {description}
+              </ItemDescription>
+            </div>
+            <span>{value}</span>
+          </ItemContent>
+          <ItemActions className="ml-4">
+            <ChevronRight className="text-muted-foreground transition-all group-hover:-mr-2 group-hover:ml-2 group-hover:text-foreground group-active:-mr-2 group-active:ml-2 group-active:text-foreground" />
+          </ItemActions>
+        </Item>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="w-fit">
+        <AlertDialogHeader>
+          <div className="flex w-full flex-row items-center justify-center gap-2">
+            <Edit className="size-4 text-muted-foreground" />
+            <AlertDialogTitle className="text-nowrap">
+              Modifica {title}
+            </AlertDialogTitle>
+          </div>
+        </AlertDialogHeader>
+        <Input
+          id={inputId}
+          type={inputType}
+          value={value}
+          onChange={onChange}
+          placeholder={inputPlaceholder}
+          className="h-auto w-full shadow-none focus-visible:ring-0"
+          inputMode={inputMode}
+          min={inputMin}
+          max={inputMax}
+          step={inputStep}
+        />
+        <AlertDialogFooter>
+          <AlertDialogCancel className="w-full">Chiudi</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
@@ -128,10 +232,6 @@ export default function UserSettingsForm() {
     }
   }
 
-  //TODO mettere gli input testuali in modo che venga visualizzato il valore,
-  // quando premo l'impostazione es. nome viene aperto un alert dove posso inserire / modificare il nome
-  // e salvare la scelta (quindi lìinput sta nell'alert)
-  // quando salvo la scelta l'alert si chiude e viene passato al campo il nuovo valore tramite setName per esempio
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -144,23 +244,19 @@ export default function UserSettingsForm() {
             Profilo
           </h3>
           <ItemGroup>
-            <Item variant="muted">
-              <ItemContent className="flex flex-row items-center justify-between">
-                <div className="flex flex-col">
-                  <ItemTitle>Nome</ItemTitle>
-                  <ItemDescription className="hidden sm:block">
-                    Il tuo nome da visualizzare
-                  </ItemDescription>
-                </div>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Il tuo nome"
-                  className="h-auto w-fit text-right shadow-none focus-visible:ring-0"
-                />
-              </ItemContent>
-            </Item>
+            <TextDataField
+              inputId="name"
+              inputType="text"
+              value={name}
+              title="Nome"
+              description="Il tuo nome da visualizzare"
+              onChange={(e) => setName(e.target.value)}
+              inputPlaceholder="Il tuo nome"
+              inputMin=""
+              inputMax=""
+              inputMode={undefined}
+              inputStep=""
+            />
           </ItemGroup>
         </div>
 
@@ -169,28 +265,19 @@ export default function UserSettingsForm() {
             Tasse
           </h3>
           <ItemGroup>
-            <Item variant="muted">
-              <ItemContent className="flex flex-row items-center justify-between">
-                <div className="flex flex-col">
-                  <ItemTitle>Percentuale Tasse sui Profitti</ItemTitle>
-                  <ItemDescription className="hidden sm:block">
-                    La percentuale di tasse applicata sui guadagni
-                  </ItemDescription>
-                </div>
-                <Input
-                  id="taxPercentage"
-                  type="number"
-                  inputMode="decimal"
-                  step="any"
-                  min="0"
-                  max="100"
-                  value={taxPercentage}
-                  onChange={(e) => setTaxPercentage(e.target.value)}
-                  placeholder="26"
-                  className="h-fit w-fit text-right shadow-none focus-visible:ring-0"
-                />
-              </ItemContent>
-            </Item>
+            <TextDataField
+              inputId="taxPercentage"
+              inputType="number"
+              inputMode="decimal"
+              inputStep="any"
+              inputMin="0"
+              inputMax="100"
+              inputPlaceholder="26"
+              value={taxPercentage}
+              title="Percentuale tasse"
+              description="La percentuale di tasse applicata ai profitti"
+              onChange={(e) => setTaxPercentage(e.target.value)}
+            />
           </ItemGroup>
         </div>
 
