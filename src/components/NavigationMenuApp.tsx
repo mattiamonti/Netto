@@ -1,4 +1,4 @@
-import { Home, List, Settings } from "lucide-react"
+import { Home, List, PieChart, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/navigation-menu"
 
 interface NavigationMenuAppProps {
-  activeTab?: "home" | "strumenti" | "settings"
-  onNavigate?: (tab: "home" | "strumenti" | "settings") => void
+  activeTab?: "home" | "strumenti" | "composizione" | "settings"
+  onNavigate?: (tab: "home" | "strumenti" | "composizione" | "settings") => void
 }
 
 const navigationMenuItems = [
@@ -19,6 +19,12 @@ const navigationMenuItems = [
     href: "#strumenti",
     icon: List,
     id: "strumenti" as const,
+  },
+  {
+    title: "Composizione",
+    href: "#composizione",
+    icon: PieChart,
+    id: "composizione" as const,
   },
   {
     title: "Impostazioni",
