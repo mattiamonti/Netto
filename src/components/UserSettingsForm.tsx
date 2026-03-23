@@ -16,26 +16,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogCancel,
-  AlertDialogAction,
 } from "@/components/ui/alert-dialog"
 import {
   Check,
   Download,
   Upload,
   Trash2,
-  Edit2,
   Edit,
-  MoveLeft,
-  ArrowBigRightDash,
   ChevronRight,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import type { AppConfigData } from "@/hooks/useAppConfig"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { toast } from "sonner"
 
 interface SettingSwitchProps {
   label: string
@@ -173,6 +169,7 @@ export default function UserSettingsForm() {
     })
 
     setIsSaved(true)
+    toast.success("Settings saved!", { position: "top-center" })
     setTimeout(() => setIsSaved(false), 2000)
   }
 

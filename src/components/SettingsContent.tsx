@@ -33,6 +33,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog"
+import { toast } from "sonner"
 
 interface InvestmentFormProps {
   initialData?: Investment
@@ -86,6 +87,9 @@ function InvestmentForm({
       quantity: qty,
       priceBought: price,
       type,
+    })
+    toast.success("Added " + type, {
+      position: "top-center",
     })
   }
 
