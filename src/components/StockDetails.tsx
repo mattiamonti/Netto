@@ -169,7 +169,7 @@ export default function StockDetails({
           quantity={!settings.anonymousData ? quantity : 0}
           pricebought={!settings.anonymousData ? boughtPrice : 0}
         />
-        <ScrollArea className="mx-4 h-[45vh] sm:h-[49vh]">
+        <ScrollArea className="mx-4 h-[50vh] sm:h-[54vh]">
           <div className="space-y-4">
             <StockChart chartData={chartData} />
             <InvestmentDetails

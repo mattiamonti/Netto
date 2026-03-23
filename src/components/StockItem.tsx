@@ -69,12 +69,6 @@ export default function StockItem({
           netProfit={netProfit}
           chartData={historicalMonthData}
         />
-
-        <DrawerFooter>
-          <DrawerClose className="rounded-full bg-muted px-4 py-2">
-            Chiudi
-          </DrawerClose>
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   )
