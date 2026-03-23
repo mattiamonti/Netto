@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import StockChart from "@/components/StockChart"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface InvestmentValueProps {
   value: number
@@ -168,21 +169,23 @@ export default function StockDetails({
           quantity={!settings.anonymousData ? quantity : 0}
           pricebought={!settings.anonymousData ? boughtPrice : 0}
         />
-        <div className="mx-4 max-h-[45vh] space-y-4 overflow-y-scroll sm:max-h-[49vh]">
-          <StockChart chartData={chartData} />
-          <InvestmentDetails
-            currentCapital={!settings.anonymousData ? currentCapital : 0}
-            boughtPrice={!settings.anonymousData ? boughtPrice : 0}
-            currentPrice={currentPrice}
-            quantity={!settings.anonymousData ? quantity : 0}
-          />
-          <SellingInvestmentSimulation
-            taxPercentage={settings.taxPercentage}
-            grossProfit={!settings.anonymousData ? grossProfit : 0}
-            netProfit={!settings.anonymousData ? netProfit : 0}
-            investedCapital={!settings.anonymousData ? investedCapital : 0}
-          />
-        </div>
+        <ScrollArea className="mx-4 h-[45vh] sm:h-[49vh]">
+          <div className="space-y-4">
+            <StockChart chartData={chartData} />
+            <InvestmentDetails
+              currentCapital={!settings.anonymousData ? currentCapital : 0}
+              boughtPrice={!settings.anonymousData ? boughtPrice : 0}
+              currentPrice={currentPrice}
+              quantity={!settings.anonymousData ? quantity : 0}
+            />
+            <SellingInvestmentSimulation
+              taxPercentage={settings.taxPercentage}
+              grossProfit={!settings.anonymousData ? grossProfit : 0}
+              netProfit={!settings.anonymousData ? netProfit : 0}
+              investedCapital={!settings.anonymousData ? investedCapital : 0}
+            />
+          </div>
+        </ScrollArea>
       </div>
     </div>
   )

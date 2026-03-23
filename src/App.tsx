@@ -10,6 +10,7 @@ import { useInvestments } from "@/hooks/useInvestments"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import UserSettingsForm from "@/components/UserSettingsForm"
 import StockItem from "@/components/StockItem"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 export function App() {
   const [activeTab, setActiveTab] = useState<"home" | "settings" | "strumenti">(
@@ -56,50 +57,54 @@ export function App() {
           <TabsTrigger value="etfs">ETFs ({etfs.length})</TabsTrigger>
           <TabsTrigger value="stocks">Stocks ({stocks.length})</TabsTrigger>
         </TabsList>
-        <TabsContent value="etfs" className="max-h-[40svh] overflow-y-scroll">
-          {!isLoaded ? (
-            <p className="py-4 text-center text-sm text-muted-foreground">
-              Caricamento...
-            </p>
-          ) : etfs.length === 0 ? (
-            <p className="py-4 text-center text-sm text-muted-foreground">
-              Nessun ETF salvato. Aggiungi un investimento dalle impostazioni.
-            </p>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {etfs.map((investment) => (
-                <StockItem
-                  key={investment.id}
-                  ticker={investment.ticker}
-                  boughtPrice={investment.priceBought}
-                  quantity={investment.quantity}
-                />
-              ))}
-            </div>
-          )}
+        <TabsContent value="etfs" className="max-h-[40svh]">
+          <ScrollArea className="h-[40svh]">
+            {!isLoaded ? (
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Caricamento...
+              </p>
+            ) : etfs.length === 0 ? (
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Nessun ETF salvato. Aggiungi un investimento dalle impostazioni.
+              </p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {etfs.map((investment) => (
+                  <StockItem
+                    key={investment.id}
+                    ticker={investment.ticker}
+                    boughtPrice={investment.priceBought}
+                    quantity={investment.quantity}
+                  />
+                ))}
+              </div>
+            )}
+          </ScrollArea>
         </TabsContent>
-        <TabsContent value="stocks">
-          {!isLoaded ? (
-            <p className="py-4 text-center text-sm text-muted-foreground">
-              Caricamento...
-            </p>
-          ) : stocks.length === 0 ? (
-            <p className="py-4 text-center text-sm text-muted-foreground">
-              Nessuno Stock salvato. Aggiungi un investimento dalle
-              impostazioni.
-            </p>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {stocks.map((investment) => (
-                <StockItem
-                  key={investment.id}
-                  ticker={investment.ticker}
-                  boughtPrice={investment.priceBought}
-                  quantity={investment.quantity}
-                />
-              ))}
-            </div>
-          )}
+        <TabsContent value="stocks" className="max-h-[40svh]">
+          <ScrollArea className="h-[40svh]">
+            {!isLoaded ? (
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Caricamento...
+              </p>
+            ) : stocks.length === 0 ? (
+              <p className="py-4 text-center text-sm text-muted-foreground">
+                Nessuno Stock salvato. Aggiungi un investimento dalle
+                impostazioni.
+              </p>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {stocks.map((investment) => (
+                  <StockItem
+                    key={investment.id}
+                    ticker={investment.ticker}
+                    boughtPrice={investment.priceBought}
+                    quantity={investment.quantity}
+                  />
+                ))}
+              </div>
+            )}
+          </ScrollArea>
         </TabsContent>
       </Tabs>
 
