@@ -44,6 +44,7 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
     !settings.anonymousData ? totalInvested : 0
   )
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(!settings.anonymousData ? totalPrice : 0)
   }, [])
 
