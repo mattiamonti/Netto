@@ -4,10 +4,8 @@ import StockDetails from "@/components/StockDetails"
 import StockPreview from "@/components/StockPreview"
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
