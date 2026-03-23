@@ -1,8 +1,17 @@
 import { useState, useRef } from "react"
 import { PieChart, Pie, Cell, LabelList } from "recharts"
 import { motion } from "motion/react"
+import { ArrowUpRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { Button } from "@/components/ui/button"
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
 import type { Investment, InvestmentType } from "@/types/investment"
 import {
   ChartContainer,
@@ -16,19 +25,6 @@ import { getCachedPrice } from "@/hooks/useStockPrice"
 interface PortfolioCompositionProps {
   investments: Investment[]
 }
-
-const COLORS = [
-  "hsl(var(--chart-1))",
-  "hsl(var(--chart-2))",
-  "hsl(var(--chart-3))",
-  "hsl(var(--chart-4))",
-  "hsl(var(--chart-5))",
-  "hsl(var(--chart-6))",
-  "hsl(var(--chart-7))",
-  "hsl(var(--chart-8))",
-  "hsl(var(--chart-9))",
-  "hsl(var(--chart-10))",
-]
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("it-IT", {
@@ -48,8 +44,6 @@ function CompositionChart({ chartData }: CompositionChartProps) {
   const chartConfig = chartData.reduce((acc, entry, index) => {
     acc[entry.name] = {
       label: entry.name,
-      // Usiamo le variabili CSS standard di shadcn (da --chart-1 a --chart-5)
-      // Se hai più di 5 entry, il modulo farà ricominciare i colori da 1
       color: `var(--chart-${(index % 5) + 1})`,
     }
     return acc
@@ -122,13 +116,10 @@ function SwipeableChart({ holdings }: SwipeableChartProps) {
     const currentX = e.touches[0].clientX
     const diff = startX.current - currentX
 
-    // Soglia minima per considerare lo swipe
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        // Swipe verso sinistra - vai alla pagina successiva
         setCurrentPage((prev) => Math.min(prev + 1, 1))
       } else {
-        // Swipe verso destra - vai alla pagina precedente
         setCurrentPage((prev) => Math.max(prev - 1, 0))
       }
       startX.current = null
@@ -200,6 +191,55 @@ function SwipeableChart({ holdings }: SwipeableChartProps) {
   )
 }
 
+interface HoldingsListProps {
+  holdings: {
+    id: string
+    ticker: string
+    value: number
+    currentValue: number
+    type: InvestmentType
+  }[]
+  totalValue: number
+}
+
+function HoldingsList({ holdings, totalValue }: HoldingsListProps) {
+  return (
+    <div className="flex flex-col gap-1">
+      <ScrollArea className="h-[50svh]">
+        {holdings
+          .sort((a, b) => b.value - a.value)
+          .map((holding, index) => {
+            const percentage =
+              totalValue > 0 ? (holding.value / totalValue) * 100 : 0
+            return (
+              <div key={holding.id}>
+                <div className="flex items-center justify-between py-2">
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <p className="font-medium">{holding.ticker}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {holding.type.toUpperCase()}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">
+                      {formatCurrency(holding.currentValue)}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {percentage.toFixed(2)}%
+                    </p>
+                  </div>
+                </div>
+                {index < holdings.length - 1 && <Separator className="my-1" />}
+              </div>
+            )
+          })}
+      </ScrollArea>
+    </div>
+  )
+}
+
 export default function PortfolioComposition({
   investments,
 }: PortfolioCompositionProps) {
@@ -218,7 +258,9 @@ export default function PortfolioComposition({
       type: inv.type,
     }
   })
+
   const totalValue = holdings.reduce((sum, h) => sum + h.currentValue, 0)
+  const totalInvested = holdings.reduce((sum, h) => sum + h.value, 0)
 
   if (investments.length === 0) {
     return (
@@ -236,67 +278,77 @@ export default function PortfolioComposition({
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Card con grafico a torta */}
       <Card>
         <CardContent className="mx-auto w-full">
           <SwipeableChart holdings={holdings} />
         </CardContent>
       </Card>
 
+      {/* Card con totali e drawer */}
       <Card>
-        <CardContent className="p-4">
-          <h3 className="mb-4 text-sm font-medium text-muted-foreground">
-            Composizione del Portafoglio
-          </h3>
-          <div className="flex flex-col gap-1">
-            <ScrollArea className="h-[35svh]">
-              {holdings
-                .sort((a, b) => b.value - a.value)
-                .map((holding, index) => {
-                  const percentage =
-                    totalValue > 0 ? (holding.value / totalValue) * 100 : 0
-                  return (
-                    <div key={holding.id}>
-                      <div className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className="h-3 w-3 shrink-0 rounded-full"
-                            style={{
-                              backgroundColor: COLORS[index % COLORS.length],
-                            }}
-                          />
-                          <div>
-                            <p className="font-medium">{holding.ticker}</p>
-                            <p className="text-xs text-muted-foreground">
-                              {holding.type.toUpperCase()}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-medium">
-                            {formatCurrency(holding.value)}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {percentage.toFixed(2)}%
-                          </p>
-                        </div>
-                      </div>
-                      {index < holdings.length - 1 && (
-                        <Separator className="my-1" />
-                      )}
-                    </div>
-                  )
-                })}
-            </ScrollArea>
-          </div>
+        <CardContent className="space-y-4 p-4">
+          <div className="flex flex-col gap-4">
+            {/* Valore Corrente */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Valore corrente</p>
+              </div>
+              <div className="text-right">
+                <p className="text-md font-semibold">
+                  {formatCurrency(totalValue)}
+                </p>
+              </div>
+            </div>
 
-          <Separator className="my-4" />
+            <Separator />
 
-          <div className="flex items-center justify-between">
-            <span className="font-medium">Totale Portafoglio</span>
-            <span className="font-semibold">{formatCurrency(totalValue)}</span>
+            {/* Valore Investito */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">
+                  Valore investito
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-md font-semibold">
+                  {formatCurrency(totalInvested)}
+                </p>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
+      {/* Drawer trigger */}
+      <Drawer>
+        <DrawerTrigger asChild>
+          <Button variant="secondary" className="w-full">
+            Vedi composizione
+            <ArrowUpRight className="ml-2 h-4 w-4" />
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent className="sm:mx-auto sm:max-w-2xl!">
+          <DrawerHeader>
+            <DrawerTitle className="text-muted-foreground">
+              Composizione del Portafoglio
+            </DrawerTitle>
+          </DrawerHeader>
+          <div className="p-4">
+            <HoldingsList holdings={holdings} totalValue={totalValue} />
+
+            <Separator className="my-4" />
+
+            <div className="flex items-center justify-between">
+              <span className="font-medium text-muted-foreground">
+                Totale Portafoglio
+              </span>
+              <span className="font-semibold">
+                {formatCurrency(totalValue)}
+              </span>
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
     </div>
   )
 }
