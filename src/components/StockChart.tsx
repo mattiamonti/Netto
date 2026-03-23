@@ -69,6 +69,11 @@ function DisplayChart(
       (chartData.at(0)?.closingPrice ?? 1) -
       1) *
     100
+  const prices = chartData.map((d) => d.closingPrice)
+  const minPrice = Math.min(...prices)
+  const maxPrice = Math.max(...prices)
+  const bottomDomain = minPrice * 0.98
+  const topDomain = maxPrice * 1.02
   return (
     <Card className="-px-4 min-w-full bg-muted p-1 ring-0">
       <CardHeader className="p-0 pl-2">
@@ -100,10 +105,12 @@ function DisplayChart(
               orientation="right"
               tickLine={false}
               axisLine={false}
+              hide={false}
               tickMargin={2}
               tick
-              domain={["dataMin - 5%", "dataMax + 5%"]}
-              tickFormatter={(value) => `€${value.toLocaleString()}`}
+              domain={[bottomDomain, topDomain]}
+              tickFormatter={(value) => `€${value.toFixed(0).toLocaleString()}`}
+              allowDataOverflow={true}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <defs>

@@ -128,6 +128,10 @@ export default function UserSettingsForm() {
     }
   }
 
+  //TODO mettere gli input testuali in modo che venga visualizzato il valore,
+  // quando premo l'impostazione es. nome viene aperto un alert dove posso inserire / modificare il nome
+  // e salvare la scelta (quindi lìinput sta nell'alert)
+  // quando salvo la scelta l'alert si chiude e viene passato al campo il nuovo valore tramite setName per esempio
   return (
     <div className="flex flex-col gap-4">
       <div>
