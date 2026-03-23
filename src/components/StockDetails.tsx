@@ -24,7 +24,10 @@ function InvestmentValue({
         <span className="text-xl font-normal text-muted-foreground">€</span>
         {total.toFixed(2)}
       </div>
-      <GainAndLossBadge profit={profit} percentage={percentage} />
+      <GainAndLossBadge
+        profit={profit}
+        percentage={percentage ? percentage : 0.0}
+      />
     </div>
   )
 }
@@ -110,7 +113,10 @@ function SellingInvestmentSimulation({
         >
           {netProfit >= 0 ? "+" : ""}
           {netProfit.toFixed(2)} € (
-          {((netProfit / investedCapital) * 100).toFixed(2)}%)
+          {investedCapital
+            ? ((netProfit / investedCapital) * 100).toFixed(2)
+            : 0}
+          %)
         </p>
       </div>
     </div>
@@ -158,23 +164,23 @@ export default function StockDetails({
     <div>
       <div className="flex min-w-full flex-col gap-4">
         <InvestmentValue
-          value={currentPrice}
-          quantity={quantity}
-          pricebought={boughtPrice}
+          value={!settings.anonymousData ? currentPrice : 0}
+          quantity={!settings.anonymousData ? quantity : 0}
+          pricebought={!settings.anonymousData ? boughtPrice : 0}
         />
         <div className="mx-4 max-h-[45vh] space-y-4 overflow-y-scroll sm:max-h-[49vh]">
           <StockChart chartData={chartData} />
           <InvestmentDetails
-            currentCapital={currentCapital}
-            boughtPrice={boughtPrice}
+            currentCapital={!settings.anonymousData ? currentCapital : 0}
+            boughtPrice={!settings.anonymousData ? boughtPrice : 0}
             currentPrice={currentPrice}
-            quantity={quantity}
+            quantity={!settings.anonymousData ? quantity : 0}
           />
           <SellingInvestmentSimulation
             taxPercentage={settings.taxPercentage}
-            grossProfit={grossProfit}
-            netProfit={netProfit}
-            investedCapital={investedCapital}
+            grossProfit={!settings.anonymousData ? grossProfit : 0}
+            netProfit={!settings.anonymousData ? netProfit : 0}
+            investedCapital={!settings.anonymousData ? investedCapital : 0}
           />
         </div>
       </div>

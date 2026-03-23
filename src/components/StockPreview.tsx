@@ -61,7 +61,7 @@ export default function StockPreview({
               {!settings.anonymousData &&
                 price &&
                 (price * quantityInput).toFixed(2) + " €"}
-              {settings.anonymousData && "XXX.XX"}
+              {settings.anonymousData && "0.00"}
             </div>
           )}
           <GainAndLossBadge
