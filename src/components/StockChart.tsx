@@ -1,12 +1,4 @@
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-} from "recharts"
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
   type ChartConfig,
@@ -14,17 +6,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "./ui/badge"
-import { TrendingDown, TrendingUp } from "lucide-react"
-import GainAndLossBadge from "./GainAndLossBadge"
+import GainAndLossBadge from "@/components/GainAndLossBadge"
 
 interface StockChartProps {
   chartData: { timestamp: number; closingPrice: number }[]
