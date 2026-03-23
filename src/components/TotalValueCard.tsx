@@ -9,6 +9,8 @@ import GainAndLossBadge from "@/components/GainAndLossBadge"
 import type { Investment } from "@/types/investment"
 import { getCachedPrice } from "@/hooks/useStockPrice"
 import { useUserSettings } from "@/hooks/useUserSettings"
+import { AnimatedNumber } from "@/components/ui/animated-number"
+import { useEffect, useState } from "react"
 
 interface TotalValueCardProps {
   investments: Investment[]
@@ -38,6 +40,12 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
     totalInvested && totalPrice ? totalPrice - totalInvested : null
   const percentage =
     totalInvested && grossProfit ? (grossProfit / totalInvested) * 100 : null
+  const [value, setValue] = useState<number>(
+    !settings.anonymousData ? totalInvested : 0
+  )
+  useEffect(() => {
+    setValue(!settings.anonymousData ? totalPrice : 0)
+  }, [])
 
   return (
     <Card className="w-full max-w-2xl shadow-none">
@@ -49,9 +57,14 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
       <CardContent className="mx-auto flex flex-col px-8">
         <CardTitle className="relative text-5xl font-medium tracking-tight md:text-6xl">
           <span className="text-2xl text-muted-foreground md:text-3xl">€ </span>
-          {!settings.anonymousData && totalPrice !== null
-            ? totalPrice.toFixed(2)
-            : "0.00"}
+          {}
+          <AnimatedNumber
+            springOptions={{
+              bounce: 0,
+              duration: 1500,
+            }}
+            value={value}
+          />
         </CardTitle>
         {grossProfit !== null && percentage !== null && (
           <div className="mt-2 flex justify-center">
