@@ -1,7 +1,9 @@
+import { useState, useRef } from "react"
 import { PieChart, Pie, Cell, LabelList } from "recharts"
+import { motion } from "motion/react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import type { Investment } from "@/types/investment"
+import type { Investment, InvestmentType } from "@/types/investment"
 import {
   ChartContainer,
   ChartTooltip,
@@ -97,6 +99,107 @@ function CompositionChart({ chartData }: CompositionChartProps) {
   )
 }
 
+interface SwipeableChartProps {
+  holdings: {
+    id: string
+    ticker: string
+    value: number
+    currentValue: number
+    type: InvestmentType
+  }[]
+}
+
+function SwipeableChart({ holdings }: SwipeableChartProps) {
+  const [currentPage, setCurrentPage] = useState(0)
+  const startX = useRef<number | null>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startX.current = e.touches[0].clientX
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (startX.current === null) return
+    const currentX = e.touches[0].clientX
+    const diff = startX.current - currentX
+
+    // Soglia minima per considerare lo swipe
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        // Swipe verso sinistra - vai alla pagina successiva
+        setCurrentPage((prev) => Math.min(prev + 1, 1))
+      } else {
+        // Swipe verso destra - vai alla pagina precedente
+        setCurrentPage((prev) => Math.max(prev - 1, 0))
+      }
+      startX.current = null
+    }
+  }
+
+  const handleTouchEnd = () => {
+    startX.current = null
+  }
+
+  const currentTotalValue = holdings.reduce((sum, h) => sum + h.currentValue, 0)
+  const currentValueData = holdings.map((holding) => ({
+    name: holding.ticker,
+    value: holding.currentValue,
+    percentage:
+      currentTotalValue > 0
+        ? (holding.currentValue / currentTotalValue) * 100
+        : 0,
+  }))
+
+  const investedTotalValue = holdings.reduce((sum, h) => sum + h.value, 0)
+  const investedValueData = holdings.map((holding) => ({
+    name: holding.ticker,
+    value: holding.value,
+    percentage:
+      investedTotalValue > 0 ? (holding.value / investedTotalValue) * 100 : 0,
+  }))
+
+  return (
+    <div className="relative">
+      <div
+        className="overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <motion.div
+          className="flex"
+          animate={{ x: -currentPage * 100 + "%" }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+          <div className="min-w-full">
+            <p className="text-center text-muted-foreground">Valore corrente</p>
+            <CompositionChart chartData={currentValueData} />
+          </div>
+          <div className="min-w-full">
+            <p className="text-center text-muted-foreground">
+              Valore investito
+            </p>
+            <CompositionChart chartData={investedValueData} />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Indicatori di pagina (puntini) */}
+      <div className="absolute right-0 bottom-0 left-0 flex justify-center gap-2">
+        {[0, 1].map((page) => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`h-2 w-2 cursor-pointer rounded-full transition-all ${
+              currentPage === page ? "w-6 bg-primary" : "bg-muted-foreground/30"
+            }`}
+            aria-label={`Vai alla pagina ${page + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function PortfolioComposition({
   investments,
 }: PortfolioCompositionProps) {
@@ -115,14 +218,7 @@ export default function PortfolioComposition({
       type: inv.type,
     }
   })
-
   const totalValue = holdings.reduce((sum, h) => sum + h.currentValue, 0)
-
-  const data = holdings.map((holding) => ({
-    name: holding.ticker,
-    value: holding.currentValue,
-    percentage: totalValue > 0 ? (holding.currentValue / totalValue) * 100 : 0,
-  }))
 
   if (investments.length === 0) {
     return (
@@ -142,7 +238,7 @@ export default function PortfolioComposition({
     <div className="flex flex-col gap-6">
       <Card>
         <CardContent className="mx-auto w-full">
-          <CompositionChart chartData={data} />
+          <SwipeableChart holdings={holdings} />
         </CardContent>
       </Card>
 
