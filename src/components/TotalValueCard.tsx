@@ -9,9 +9,8 @@ import GainAndLossBadge from "@/components/GainAndLossBadge"
 import type { Investment } from "@/types/investment"
 import { getCachedPrice } from "@/hooks/useStockPrice"
 import { useUserSettings } from "@/hooks/useUserSettings"
-import { AnimatedNumber } from "@/components/ui/animated-number"
 import { useEffect, useState } from "react"
-import NumberFlow, { NumberFlowGroup } from "@number-flow/react"
+import NumberFlow from "@number-flow/react"
 
 interface TotalValueCardProps {
   investments: Investment[]
