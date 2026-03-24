@@ -34,6 +34,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog"
 import { toast } from "sonner"
+import { AnimatedList } from "@/components/ui/animated-list"
 
 interface InvestmentFormProps {
   initialData?: Investment
@@ -277,121 +278,129 @@ export default function SettingsContent() {
           </TabsList>
 
           <TabsContent value="etfs" className="space-y-2">
-            {etfs.length === 0 ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">
-                Nessun ETF salvato
-              </p>
-            ) : (
-              etfs.map((investment) => (
-                <Item key={investment.id} variant="outline">
-                  <ItemContent>
-                    <ItemTitle>{investment.ticker}</ItemTitle>
-                    <ItemDescription>
-                      {investment.quantity} quote @{" "}
-                      {investment.priceBought.toFixed(2)} €
-                    </ItemDescription>
-                  </ItemContent>
-                  <ItemActions>
-                    <EditInvestmentDialog
-                      investment={investment}
-                      onUpdate={handleUpdateInvestment}
-                    />
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <div className="flex items-center gap-2">
-                            <Trash2 className="size-5 text-destructive" />
-                            <AlertDialogTitle>
-                              Elimina investimento
-                            </AlertDialogTitle>
-                          </div>
-                          <AlertDialogDescription>
-                            Questo eliminerà l'investimento e tutti i dati
-                            collegati ad esso. L'azione non può essere
-                            annullata.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            variant="destructive"
-                            onClick={() =>
-                              handleRemoveInvestment(investment.id)
-                            }
-                          >
-                            Elimina investimento
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </ItemActions>
-                </Item>
-              ))
-            )}
+            <AnimatedList delay={100}>
+              <div className="space-y-2">
+                {etfs.length === 0 ? (
+                  <p className="py-4 text-center text-sm text-muted-foreground">
+                    Nessun ETF salvato
+                  </p>
+                ) : (
+                  etfs.map((investment) => (
+                    <Item key={investment.id} variant="outline">
+                      <ItemContent>
+                        <ItemTitle>{investment.ticker}</ItemTitle>
+                        <ItemDescription>
+                          {investment.quantity} quote @{" "}
+                          {investment.priceBought.toFixed(2)} €
+                        </ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <EditInvestmentDialog
+                          investment={investment}
+                          onUpdate={handleUpdateInvestment}
+                        />
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <div className="flex items-center gap-2">
+                                <Trash2 className="size-5 text-destructive" />
+                                <AlertDialogTitle>
+                                  Elimina investimento
+                                </AlertDialogTitle>
+                              </div>
+                              <AlertDialogDescription>
+                                Questo eliminerà l'investimento e tutti i dati
+                                collegati ad esso. L'azione non può essere
+                                annullata.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                variant="destructive"
+                                onClick={() =>
+                                  handleRemoveInvestment(investment.id)
+                                }
+                              >
+                                Elimina investimento
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </ItemActions>
+                    </Item>
+                  ))
+                )}
+              </div>
+            </AnimatedList>
           </TabsContent>
 
           <TabsContent value="stocks" className="space-y-2">
-            {stocks.length === 0 ? (
-              <p className="py-4 text-center text-sm text-muted-foreground">
-                Nessuno Stock salvato
-              </p>
-            ) : (
-              stocks.map((investment) => (
-                <Item key={investment.id} variant="outline">
-                  <ItemContent>
-                    <ItemTitle>{investment.ticker}</ItemTitle>
-                    <ItemDescription>
-                      {investment.quantity} quote @{" "}
-                      {investment.priceBought.toFixed(2)} €
-                    </ItemDescription>
-                  </ItemContent>
-                  <ItemActions>
-                    <EditInvestmentDialog
-                      investment={investment}
-                      onUpdate={handleUpdateInvestment}
-                    />
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <div className="flex items-center gap-2">
-                            <Trash2 className="size-5 text-destructive" />
-                            <AlertDialogTitle>
-                              Elimina investimento
-                            </AlertDialogTitle>
-                          </div>
-                          <AlertDialogDescription>
-                            Questo eliminerà l'investimento e tutti i dati
-                            collegati ad esso. L'azione non può essere
-                            annullata.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            variant="destructive"
-                            onClick={() =>
-                              handleRemoveInvestment(investment.id)
-                            }
-                          >
-                            Elimina investimento
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </ItemActions>
-                </Item>
-              ))
-            )}
+            <AnimatedList delay={100}>
+              <div className="space-y-2">
+                {stocks.length === 0 ? (
+                  <p className="py-4 text-center text-sm text-muted-foreground">
+                    Nessuno Stock salvato
+                  </p>
+                ) : (
+                  stocks.map((investment) => (
+                    <Item key={investment.id} variant="outline">
+                      <ItemContent>
+                        <ItemTitle>{investment.ticker}</ItemTitle>
+                        <ItemDescription>
+                          {investment.quantity} quote @{" "}
+                          {investment.priceBought.toFixed(2)} €
+                        </ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <EditInvestmentDialog
+                          investment={investment}
+                          onUpdate={handleUpdateInvestment}
+                        />
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <div className="flex items-center gap-2">
+                                <Trash2 className="size-5 text-destructive" />
+                                <AlertDialogTitle>
+                                  Elimina investimento
+                                </AlertDialogTitle>
+                              </div>
+                              <AlertDialogDescription>
+                                Questo eliminerà l'investimento e tutti i dati
+                                collegati ad esso. L'azione non può essere
+                                annullata.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                variant="destructive"
+                                onClick={() =>
+                                  handleRemoveInvestment(investment.id)
+                                }
+                              >
+                                Elimina investimento
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </ItemActions>
+                    </Item>
+                  ))
+                )}
+              </div>
+            </AnimatedList>
           </TabsContent>
         </Tabs>
       )}

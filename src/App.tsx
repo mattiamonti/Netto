@@ -5,13 +5,14 @@ import NavigationMenuApp from "@/components/NavigationMenuApp"
 import SettingsContent from "@/components/SettingsContent"
 import PWAInstallPrompt from "@/components/PWAInstallPrompt"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import TotalPanicSellSection from "./components/TotalPanicSellSection"
+import TotalPanicSellSection from "@/components/TotalPanicSellSection"
 import { useInvestments } from "@/hooks/useInvestments"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import UserSettingsForm from "@/components/UserSettingsForm"
 import StockItem from "@/components/StockItem"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import PortfolioComposition from "@/components/PortfolioComposition"
+import { AnimatedList } from "@/components/ui/animated-list"
 
 export function App() {
   const [activeTab, setActiveTab] = useState<
@@ -79,16 +80,18 @@ export function App() {
                 Nessun ETF salvato. Aggiungi un investimento dalle impostazioni.
               </p>
             ) : (
-              <div className="flex flex-col gap-2">
-                {etfs.map((investment) => (
-                  <StockItem
-                    key={investment.id}
-                    ticker={investment.ticker}
-                    boughtPrice={investment.priceBought}
-                    quantity={investment.quantity}
-                  />
-                ))}
-              </div>
+              <AnimatedList delay={100} className="min-w-full">
+                <div className="flex flex-col gap-2">
+                  {etfs.map((investment) => (
+                    <StockItem
+                      key={investment.id}
+                      ticker={investment.ticker}
+                      boughtPrice={investment.priceBought}
+                      quantity={investment.quantity}
+                    />
+                  ))}
+                </div>
+              </AnimatedList>
             )}
           </ScrollArea>
         </TabsContent>
@@ -104,16 +107,18 @@ export function App() {
                 impostazioni.
               </p>
             ) : (
-              <div className="flex flex-col gap-2">
-                {stocks.map((investment) => (
-                  <StockItem
-                    key={investment.id}
-                    ticker={investment.ticker}
-                    boughtPrice={investment.priceBought}
-                    quantity={investment.quantity}
-                  />
-                ))}
-              </div>
+              <AnimatedList delay={100} className="min-w-full">
+                <div className="flex flex-col gap-2">
+                  {stocks.map((investment) => (
+                    <StockItem
+                      key={investment.id}
+                      ticker={investment.ticker}
+                      boughtPrice={investment.priceBought}
+                      quantity={investment.quantity}
+                    />
+                  ))}
+                </div>
+              </AnimatedList>
             )}
           </ScrollArea>
         </TabsContent>

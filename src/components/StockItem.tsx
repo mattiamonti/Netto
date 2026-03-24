@@ -40,7 +40,7 @@ export default function StockItem({
 
   return (
     <Drawer>
-      <DrawerTrigger>
+      <DrawerTrigger className="min-w-full">
         <StockPreview
           ticker={ticker}
           name={name ? name : "..."}

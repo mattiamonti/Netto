@@ -21,6 +21,7 @@ import {
 import type { ChartConfig } from "@/components/ui/chart"
 import { ScrollArea } from "./ui/scroll-area"
 import { getCachedPrice } from "@/hooks/useStockPrice"
+import { AnimatedList } from "./ui/animated-list"
 
 interface PortfolioCompositionProps {
   investments: Investment[]
@@ -206,35 +207,40 @@ function HoldingsList({ holdings, totalValue }: HoldingsListProps) {
   return (
     <div className="flex flex-col gap-1">
       <ScrollArea className="h-[50svh]">
-        {holdings
-          .sort((a, b) => b.value - a.value)
-          .map((holding, index) => {
-            const percentage =
-              totalValue > 0 ? (holding.value / totalValue) * 100 : 0
-            return (
-              <div key={holding.id}>
-                <div className="flex items-center justify-between py-2">
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <p className="font-medium">{holding.ticker}</p>
+        <AnimatedList delay={100}>
+          {holdings
+            .sort((a, b) => b.value - a.value)
+            .reverse()
+            .map((holding, index) => {
+              const percentage =
+                totalValue > 0 ? (holding.value / totalValue) * 100 : 0
+              return (
+                <div key={holding.id}>
+                  <div className="flex items-center justify-between py-2">
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <p className="font-medium">{holding.ticker}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {holding.type.toUpperCase()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium">
+                        {formatCurrency(holding.currentValue)}
+                      </p>
                       <p className="text-xs text-muted-foreground">
-                        {holding.type.toUpperCase()}
+                        {percentage.toFixed(2)}%
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-medium">
-                      {formatCurrency(holding.currentValue)}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {percentage.toFixed(2)}%
-                    </p>
-                  </div>
+                  {index < holdings.length - 1 && (
+                    <Separator className="my-1" />
+                  )}
                 </div>
-                {index < holdings.length - 1 && <Separator className="my-1" />}
-              </div>
-            )
-          })}
+              )
+            })}
+        </AnimatedList>
       </ScrollArea>
     </div>
   )
