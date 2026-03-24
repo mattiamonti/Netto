@@ -11,6 +11,7 @@ import { getCachedPrice } from "@/hooks/useStockPrice"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { AnimatedNumber } from "@/components/ui/animated-number"
 import { useEffect, useState } from "react"
+import NumberFlow, { NumberFlowGroup } from "@number-flow/react"
 
 interface TotalValueCardProps {
   investments: Investment[]
@@ -59,12 +60,10 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
         <CardTitle className="relative text-5xl font-medium tracking-tight md:text-6xl">
           <span className="text-2xl text-muted-foreground md:text-3xl">€ </span>
           {}
-          <AnimatedNumber
-            springOptions={{
-              bounce: 0,
-              duration: 1500,
-            }}
+          <NumberFlow
             value={value}
+            locales="it-IT"
+            format={{ style: "currency", currency: "EUR" }}
           />
         </CardTitle>
         {grossProfit !== null && percentage !== null && (
