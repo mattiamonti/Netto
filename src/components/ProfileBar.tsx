@@ -1,18 +1,29 @@
 import AvatarDemo from "@/components/customized/avatar/avatar-01"
 import { RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
 
 interface ProfileBarProps {
   profileName: string
-  onNavigate: (tab: "home" | "strumenti" | "settings") => void
+  onNavigate?: (tab: "home" | "strumenti" | "settings") => void
 }
 
 export default function ProfileBar({
   profileName,
   onNavigate,
 }: ProfileBarProps) {
+  const navigate = useNavigate()
+
   const handleRefresh = () => {
     window.location.reload()
+  }
+
+  const handleClick = () => {
+    if (onNavigate) {
+      onNavigate("settings")
+    } else {
+      navigate("/Netto/settings")
+    }
   }
 
   return (
@@ -27,12 +38,7 @@ export default function ProfileBar({
         >
           <RefreshCw className="h-5 w-5" />
         </Button>
-        <div
-          onClick={(e) => {
-            e.preventDefault()
-            onNavigate?.("settings")
-          }}
-        >
+        <div onClick={handleClick}>
           <AvatarDemo profileName={profileName} />
         </div>
       </div>

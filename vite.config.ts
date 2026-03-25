@@ -97,6 +97,8 @@ export default defineConfig({
       },
       devOptions: {
         enabled: false,
+        type: "module",
+        navigateFallback: "index.html",
       },
     }),
   ],
