@@ -6,24 +6,21 @@ import StockChart from "@/components/StockChart"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface InvestmentValueProps {
-  value: number
-  quantity: number
-  pricebought: number
+  currentCapital: number
+  investedCapital: number
 }
 
 function InvestmentValue({
-  value,
-  quantity,
-  pricebought,
+  currentCapital,
+  investedCapital,
 }: InvestmentValueProps) {
-  const profit = value * quantity - pricebought * quantity
-  const total = value * quantity
-  const percentage = (value / pricebought - 1) * 100
+  const profit = currentCapital - investedCapital
+  const percentage = (currentCapital / investedCapital - 1) * 100
   return (
     <div className="mx-4 flex flex-col items-center gap-4 text-3xl font-semibold md:flex-row">
       <div className="flex flex-row items-baseline-last gap-2">
         <span className="text-xl font-normal text-muted-foreground">€</span>
-        {total.toFixed(2)}
+        {currentCapital.toFixed(2)}
       </div>
       <GainAndLossBadge
         profit={profit}
@@ -40,7 +37,7 @@ interface InvestmentDetailsProps {
   currentPrice: number
 }
 function InvestmentDetails({
-  currentCapital,
+  currentCapital: investedCapital,
   quantity,
   boughtPrice,
   currentPrice,
@@ -52,7 +49,7 @@ function InvestmentDetails({
           <Wallet className="h-4 w-4" />
           <span className="text-xs font-medium">Investito</span>
         </div>
-        <p className="text-lg font-semibold">{currentCapital.toFixed(2)} €</p>
+        <p className="text-lg font-semibold">{investedCapital.toFixed(2)} €</p>
         <p className="text-xs text-muted-foreground">{quantity} quote</p>
       </Card>
       <Card className="flex h-fit gap-4 p-4">
@@ -165,15 +162,14 @@ export default function StockDetails({
     <div>
       <div className="flex min-w-full flex-col gap-4">
         <InvestmentValue
-          value={!settings.anonymousData ? currentPrice : 0}
-          quantity={!settings.anonymousData ? quantity : 0}
-          pricebought={!settings.anonymousData ? boughtPrice : 0}
+          currentCapital={!settings.anonymousData ? currentCapital : 0}
+          investedCapital={!settings.anonymousData ? investedCapital : 0}
         />
         <ScrollArea className="mx-4 h-[50vh] sm:h-[54vh]">
           <div className="space-y-4">
             <StockChart chartData={chartData} />
             <InvestmentDetails
-              currentCapital={!settings.anonymousData ? currentCapital : 0}
+              currentCapital={!settings.anonymousData ? investedCapital : 0}
               boughtPrice={!settings.anonymousData ? boughtPrice : 0}
               currentPrice={currentPrice}
               quantity={!settings.anonymousData ? quantity : 0}
