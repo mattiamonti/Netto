@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 import type { Investment } from "@/types/investment"
-import { getCachedPrice } from "@/hooks/useStockPrice"
+import { fetchStockPrice, getCachedPrice } from "@/hooks/useStockPrice"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { useEffect, useState } from "react"
 import NumberFlow from "@number-flow/react"

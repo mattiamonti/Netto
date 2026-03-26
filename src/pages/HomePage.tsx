@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useInvestments } from "@/hooks/useInvestments"
+import type { Investment } from "@/types/investment"
 import TotalValueCard from "@/components/TotalValueCard"
 import TotalPanicSellSection from "@/components/TotalPanicSellSection"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -7,10 +8,20 @@ import StockItem from "@/components/StockItem"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { PageTransition } from "@/components/PageTransition"
+import { fetchStockPrice } from "@/hooks/useStockPrice"
 
 export default function HomePage() {
   const { investments, getInvestmentsByType, isLoaded } = useInvestments()
   const [activeTab, setActiveTab] = useState<"etfs" | "stocks">("etfs")
+
+  useEffect(() => {
+    investments.forEach((investment: Investment) => {
+      fetchStockPrice(investment.ticker)
+      console.log(
+        "CALLED FETCH STOCK PRICE from HOMEPAGE for " + investment.ticker
+      )
+    })
+  }, [investments])
 
   const etfs = getInvestmentsByType("etf")
   const stocks = getInvestmentsByType("stock")
