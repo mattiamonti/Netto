@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
 import { useUserSettings } from "@/hooks/useUserSettings"
+import { AnimatedList } from "@/components/ui/animated-list"
 
 function calculateTotalValue(investments: Investment[]) {
   let total = 0
@@ -64,26 +65,38 @@ export default function TotalPanicSellSection({
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent className="space-y-2">
-        <Alert className="text-warning w-full border-yellow-200/60 bg-yellow-200/10">
-          <AlertTitle className="flex flex-row items-center gap-2 font-semibold text-yellow-200/80">
-            <TriangleAlert size={16} />
-            Simulazione vendita immediata
-          </AlertTitle>
-          <AlertDescription className="flex flex-col gap-2 text-foreground">
-            <span>Di tutti gli strumenti, tenendo conto delle tasse.</span>
-            <Separator />
-            <span>
-              Tasse ({settings.taxPercentage}%) -
-              {(grossProfit - netProfit).toFixed(2)} €
-            </span>
-            <span>Guadagno Netto {netProfit.toFixed(2)} €</span>
-            <Separator />
-            <span className="text-lg">
-              Totale {capital !== null ? capital.toFixed(2) : "0.00"} € (
-              {percentage.toFixed(2)}%)
-            </span>
-          </AlertDescription>
-        </Alert>
+        <AnimatedList delay={200}>
+          <Alert className="text-warning w-full border-yellow-200/60 bg-yellow-200/10">
+            <AlertTitle className="flex flex-row items-center gap-2 font-semibold text-yellow-200/80">
+              <TriangleAlert size={16} />
+              Simulazione vendita immediata
+            </AlertTitle>
+            <AlertDescription className="flex flex-col gap-2 text-muted-foreground">
+              <span>Di tutti gli strumenti, tenendo conto delle tasse.</span>
+              <Separator />
+              <span className="flex flex-row justify-between">
+                <span>Tasse ({settings.taxPercentage}%)</span>
+                <span className="text-foreground">
+                  -{(grossProfit - netProfit).toFixed(2)} €
+                </span>
+              </span>
+              <span className="flex flex-row justify-between">
+                <span>Guadagno Netto</span>
+                <span className="text-foreground">
+                  {netProfit.toFixed(2)} €
+                </span>
+              </span>
+              <Separator />
+              <span className="flex flex-row justify-between text-lg">
+                <span>Totale</span>
+                <span className="text-foreground">
+                  {capital !== null ? capital.toFixed(2) : "0.00"} € (
+                  {percentage.toFixed(2)}%)
+                </span>
+              </span>
+            </AlertDescription>
+          </Alert>
+        </AnimatedList>
       </CollapsibleContent>
     </Collapsible>
   )
