@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
+import { useState, useMemo } from "react"
 import { useInvestments } from "@/hooks/useInvestments"
-import type { Investment } from "@/types/investment"
 import TotalValueCard from "@/components/TotalValueCard"
 import TotalPanicSellSection from "@/components/TotalPanicSellSection"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -8,28 +7,25 @@ import StockItem from "@/components/StockItem"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AnimatedList } from "@/components/ui/animated-list"
 import { PageTransition } from "@/components/PageTransition"
-import { fetchStockPrice } from "@/hooks/useStockPrice"
+import { useStockPrices } from "@/hooks/useStockPrices"
 
 export default function HomePage() {
   const { investments, getInvestmentsByType, isLoaded } = useInvestments()
   const [activeTab, setActiveTab] = useState<"etfs" | "stocks">("etfs")
 
-  useEffect(() => {
-    investments.forEach((investment: Investment) => {
-      fetchStockPrice(investment.ticker)
-      console.log(
-        "CALLED FETCH STOCK PRICE from HOMEPAGE for " + investment.ticker
-      )
-    })
-  }, [investments])
+  const allTickers = useMemo(
+    () => investments.map((inv) => inv.ticker),
+    [investments]
+  )
+  const stockPrices = useStockPrices(allTickers)
 
   const etfs = getInvestmentsByType("etf")
   const stocks = getInvestmentsByType("stock")
 
   return (
     <PageTransition>
-      <TotalValueCard investments={investments} />
-      <TotalPanicSellSection investments={investments} />
+      <TotalValueCard investments={investments} stockPrices={stockPrices} />
+      <TotalPanicSellSection investments={investments} stockPrices={stockPrices} />
 
       <Tabs
         defaultValue="etfs"
@@ -54,14 +50,21 @@ export default function HomePage() {
             ) : (
               <AnimatedList delay={100} className="min-w-full">
                 <div className="flex flex-col gap-2">
-                  {etfs.map((investment) => (
-                    <StockItem
-                      key={investment.id}
-                      ticker={investment.ticker}
-                      boughtPrice={investment.priceBought}
-                      quantity={investment.quantity}
-                    />
-                  ))}
+                  {etfs.map((investment) => {
+                    const stockData = stockPrices[investment.ticker]
+                    return (
+                      <StockItem
+                        key={investment.id}
+                        ticker={investment.ticker}
+                        boughtPrice={investment.priceBought}
+                        quantity={investment.quantity}
+                        price={stockData?.price ?? null}
+                        name={stockData?.name ?? null}
+                        loading={stockData?.loading ?? true}
+                        historicalMonthData={stockData?.historicalMonthData ?? []}
+                      />
+                    )
+                  })}
                 </div>
               </AnimatedList>
             )}
@@ -81,14 +84,21 @@ export default function HomePage() {
             ) : (
               <AnimatedList delay={100} className="min-w-full">
                 <div className="flex flex-col gap-2">
-                  {stocks.map((investment) => (
-                    <StockItem
-                      key={investment.id}
-                      ticker={investment.ticker}
-                      boughtPrice={investment.priceBought}
-                      quantity={investment.quantity}
-                    />
-                  ))}
+                  {stocks.map((investment) => {
+                    const stockData = stockPrices[investment.ticker]
+                    return (
+                      <StockItem
+                        key={investment.id}
+                        ticker={investment.ticker}
+                        boughtPrice={investment.priceBought}
+                        quantity={investment.quantity}
+                        price={stockData?.price ?? null}
+                        name={stockData?.name ?? null}
+                        loading={stockData?.loading ?? true}
+                        historicalMonthData={stockData?.historicalMonthData ?? []}
+                      />
+                    )
+                  })}
                 </div>
               </AnimatedList>
             )}

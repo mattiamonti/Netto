@@ -7,21 +7,25 @@ import {
 } from "@/components/ui/card"
 import GainAndLossBadge from "@/components/GainAndLossBadge"
 import type { Investment } from "@/types/investment"
-import { fetchStockPrice, getCachedPrice } from "@/hooks/useStockPrice"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { useEffect, useState } from "react"
 import NumberFlow from "@number-flow/react"
 
 interface TotalValueCardProps {
   investments: Investment[]
+  stockPrices: { [ticker: string]: { price: number | null; loading: boolean } }
 }
 
-function calculateTotalValue(investments: Investment[]) {
+function calculateTotalValue(
+  investments: Investment[],
+  stockPrices: { [ticker: string]: { price: number | null; loading: boolean } }
+) {
   let total = 0
   let invested = 0
 
   investments.forEach((investment) => {
-    const cachedPrice = getCachedPrice(investment.ticker)
+    const priceData = stockPrices[investment.ticker]
+    const cachedPrice = priceData?.price
     if (cachedPrice) {
       total += cachedPrice * investment.quantity
       invested += investment.priceBought * investment.quantity
@@ -31,10 +35,15 @@ function calculateTotalValue(investments: Investment[]) {
   return { total, invested }
 }
 
-export default function TotalValueCard({ investments }: TotalValueCardProps) {
+export default function TotalValueCard({
+  investments,
+  stockPrices,
+}: TotalValueCardProps) {
   const { settings } = useUserSettings()
-  const { total: totalPrice, invested: totalInvested } =
-    calculateTotalValue(investments)
+  const { total: totalPrice, invested: totalInvested } = calculateTotalValue(
+    investments,
+    stockPrices
+  )
 
   const grossProfit =
     totalInvested && totalPrice ? totalPrice - totalInvested : null
@@ -46,7 +55,7 @@ export default function TotalValueCard({ investments }: TotalValueCardProps) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setValue(!settings.anonymousData ? totalPrice : 0)
-  }, [])
+  }, [totalPrice, settings.anonymousData])
 
   return (
     <Card className="w-full max-w-2xl shadow-none">

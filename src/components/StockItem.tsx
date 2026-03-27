@@ -1,5 +1,4 @@
 import { useUserSettings } from "@/hooks/useUserSettings"
-import { useStockPrice } from "@/hooks/useStockPrice"
 import StockDetails from "@/components/StockDetails"
 import StockPreview from "@/components/StockPreview"
 import {
@@ -15,15 +14,22 @@ interface StockNewItemProps {
   ticker: string
   boughtPrice: number
   quantity: number
+  price: number | null
+  name: string | null
+  loading: boolean
+  historicalMonthData: { timestamp: number; closingPrice: number }[]
 }
 
 export default function StockItem({
   ticker,
   boughtPrice,
   quantity,
+  price,
+  name,
+  loading,
+  historicalMonthData,
 }: StockNewItemProps) {
   const { settings } = useUserSettings()
-  const { price, name, loading, historicalMonthData } = useStockPrice(ticker)
   if (!price && !loading) {
     return null
   }

@@ -5,19 +5,22 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import type { Investment } from "@/types/investment"
-import { getCachedPrice } from "@/hooks/useStockPrice"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { AnimatedList } from "@/components/ui/animated-list"
 
-function calculateTotalValue(investments: Investment[]) {
+function calculateTotalValue(
+  investments: Investment[],
+  stockPrices: { [ticker: string]: { price: number | null; loading: boolean } }
+) {
   let total = 0
   let invested = 0
 
   investments.forEach((investment) => {
-    const cachedPrice = getCachedPrice(investment.ticker)
+    const priceData = stockPrices[investment.ticker]
+    const cachedPrice = priceData?.price
     if (cachedPrice) {
       total += cachedPrice * investment.quantity
       invested += investment.priceBought * investment.quantity
@@ -41,15 +44,19 @@ function StatItem({ label, value }: StatItemProps) {
 
 interface TotalValueCardProps {
   investments: Investment[]
+  stockPrices: { [ticker: string]: { price: number | null; loading: boolean } }
 }
 
 export default function TotalPanicSellSection({
   investments,
+  stockPrices,
 }: TotalValueCardProps) {
   const [sectionOpen, setSectionOpen] = useState<boolean>(false)
-  const { total: totalPrice, invested: totalInvested } =
-    calculateTotalValue(investments)
   const { settings } = useUserSettings()
+  const { total: totalPrice, invested: totalInvested } = calculateTotalValue(
+    investments,
+    stockPrices
+  )
 
   const grossProfit = totalPrice - totalInvested
   let netProfit = 0
