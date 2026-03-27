@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import { PieChart, Pie, Cell, LabelList } from "recharts"
 import { motion } from "motion/react"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
@@ -328,9 +328,10 @@ export default function PortfolioComposition({
       {/* Drawer trigger */}
       <Drawer>
         <DrawerTrigger asChild>
-          <Button variant="secondary" className="w-full">
+          <Button className="group w-full">
             Vedi composizione
-            <ArrowUpRight className="ml-2 h-4 w-4" />
+            <ArrowUpRight className="ml-2 h-4 w-4 transition-all group-active:hidden" />
+            <ArrowRight className="ml-2 hidden h-4 w-4 transition-all group-active:block" />
           </Button>
         </DrawerTrigger>
         <DrawerContent className="sm:mx-auto sm:max-w-2xl!">
