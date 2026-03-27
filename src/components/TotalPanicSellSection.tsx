@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator"
 import { useState } from "react"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { AnimatedList } from "@/components/ui/animated-list"
+import NumberFlow from "@number-flow/react"
 
 function calculateTotalValue(
   investments: Investment[],
@@ -31,13 +32,19 @@ function calculateTotalValue(
 }
 interface StatItemProps {
   label: string
-  value: string
+  value: number
 }
 function StatItem({ label, value }: StatItemProps) {
   return (
     <span className="flex flex-row justify-between">
       <span>{label}</span>
-      <span className="text-foreground">{value}</span>
+      <span className="text-foreground">
+        <NumberFlow
+          value={value}
+          locales="it-IT"
+          format={{ style: "currency", currency: "EUR" }}
+        />
+      </span>
     </span>
   )
 }
@@ -95,18 +102,15 @@ export default function TotalPanicSellSection({
               <Separator />
               <StatItem
                 label={`Tasse (${settings.taxPercentage}%)`}
-                value={`-${(grossProfit - netProfit).toFixed(2)} €`}
+                value={netProfit - grossProfit}
               />
               <StatItem
-                label="Guadagno netto"
-                value={`${netProfit.toFixed(2)} €`}
+                label={`Guadagno netto ( ${percentage.toFixed(2)}%)`}
+                value={netProfit}
               />
               <Separator />
               <span className="text-lg">
-                <StatItem
-                  label="Totale"
-                  value={`${capital !== null ? capital.toFixed(2) : "0.00"} € ( ${percentage.toFixed(2)}%)`}
-                />
+                <StatItem label="Totale" value={capital} />
               </span>
             </AlertDescription>
           </Alert>

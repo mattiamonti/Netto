@@ -4,6 +4,8 @@ import GainAndLossBadge from "@/components/GainAndLossBadge"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import StockChart from "@/components/StockChart"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import NumberFlow from "@number-flow/react"
+import { useEffect, useState } from "react"
 
 interface InvestmentValueProps {
   currentCapital: number
@@ -14,13 +16,20 @@ function InvestmentValue({
   currentCapital,
   investedCapital,
 }: InvestmentValueProps) {
+  const [value, setValue] = useState<number>(investedCapital)
   const profit = currentCapital - investedCapital
   const percentage = (currentCapital / investedCapital - 1) * 100
+  useEffect(() => {
+    setValue(currentCapital)
+  }, [currentCapital])
   return (
     <div className="mx-4 flex flex-col items-center gap-4 text-3xl font-semibold md:flex-row">
       <div className="flex flex-row items-baseline-last gap-2">
-        <span className="text-xl font-normal text-muted-foreground">€</span>
-        {currentCapital.toFixed(2)}
+        <NumberFlow
+          value={value}
+          locales="it-IT"
+          format={{ style: "currency", currency: "EUR" }}
+        />
       </div>
       <GainAndLossBadge
         profit={profit}
@@ -49,7 +58,13 @@ function InvestmentDetails({
           <Wallet className="h-4 w-4" />
           <span className="text-xs font-medium">Investito</span>
         </div>
-        <p className="text-lg font-semibold">{investedCapital.toFixed(2)} €</p>
+        <p className="text-lg font-semibold">
+          <NumberFlow
+            value={investedCapital}
+            locales="it-IT"
+            format={{ style: "currency", currency: "EUR" }}
+          />
+        </p>
         <p className="text-xs text-muted-foreground">{quantity} quote</p>
       </Card>
       <Card className="flex h-fit gap-4 p-4">
@@ -57,7 +72,13 @@ function InvestmentDetails({
           <DollarSign className="h-4 w-4" />
           <span className="text-xs font-medium">Prezzo/unità</span>
         </div>
-        <p className="text-lg font-semibold">{boughtPrice.toFixed(2)} €</p>
+        <p className="text-lg font-semibold">
+          <NumberFlow
+            value={boughtPrice}
+            locales="it-IT"
+            format={{ style: "currency", currency: "EUR" }}
+          />
+        </p>
         <p className="text-xs text-muted-foreground">
           Attuale: {currentPrice.toFixed(2)} €
         </p>
@@ -82,8 +103,11 @@ function SellingInvestmentSimulation({
     <div className="flex items-center justify-between">
       <span className="text-sm text-muted-foreground">Profitto lordo</span>
       <span className="font-medium">
-        {grossProfit >= 0 ? "+" : ""}
-        {grossProfit.toFixed(2)} €
+        <NumberFlow
+          value={grossProfit}
+          locales="it-IT"
+          format={{ style: "currency", currency: "EUR" }}
+        />
       </span>
     </div>
   )
@@ -93,9 +117,11 @@ function SellingInvestmentSimulation({
         Tasse ({taxPercentage}%)
       </span>
       <span className="font-medium text-yellow-600">
-        {grossProfit > 0
-          ? `-${(grossProfit - netProfit).toFixed(2)} €`
-          : "0.00 €"}
+        <NumberFlow
+          value={netProfit - grossProfit}
+          locales="it-IT"
+          format={{ style: "currency", currency: "EUR" }}
+        />
       </span>
     </div>
   )
@@ -104,17 +130,21 @@ function SellingInvestmentSimulation({
       <span className="text-sm font-medium">Profitto netto</span>
       <div className="text-right">
         <p className="text-lg font-semibold">
-          {(investedCapital + netProfit).toFixed(2)} €
+          <NumberFlow
+            value={investedCapital + netProfit}
+            locales="it-IT"
+            format={{ style: "currency", currency: "EUR" }}
+          />
         </p>
         <p
           className={`mt-1 text-xs ${netProfit >= 0 ? "text-emerald-600" : "text-red-600"}`}
         >
-          {netProfit >= 0 ? "+" : ""}
-          {netProfit.toFixed(2)} € (
-          {investedCapital
-            ? ((netProfit / investedCapital) * 100).toFixed(2)
-            : 0}
-          %)
+          <NumberFlow
+            value={netProfit}
+            locales="it-IT"
+            format={{ style: "currency", currency: "EUR" }}
+            suffix={` (${investedCapital ? ((netProfit / investedCapital) * 100).toFixed(2) : 0}%)`}
+          />
         </p>
       </div>
     </div>

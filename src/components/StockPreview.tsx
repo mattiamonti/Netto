@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useUserSettings } from "@/hooks/useUserSettings"
+import NumberFlow from "@number-flow/react"
 
 interface StockPreviewProps {
   name: string
@@ -58,10 +59,11 @@ export default function StockPreview({
             <SpinnerCircle />
           ) : (
             <div className="text-lg text-nowrap">
-              {!settings.anonymousData &&
-                price &&
-                (price * quantityInput).toFixed(2) + " €"}
-              {settings.anonymousData && "0.00"}
+              <NumberFlow
+                value={!settings.anonymousData ? price * quantityInput : 0}
+                locales="it-IT"
+                format={{ style: "currency", currency: "EUR" }}
+              />
             </div>
           )}
           <GainAndLossBadge

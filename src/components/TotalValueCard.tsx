@@ -66,8 +66,6 @@ export default function TotalValueCard({
       </CardHeader>
       <CardContent className="mx-auto flex flex-col px-8">
         <CardTitle className="relative text-5xl font-medium tracking-tight md:text-6xl">
-          <span className="text-2xl text-muted-foreground md:text-3xl">€ </span>
-          {}
           <NumberFlow
             value={value}
             locales="it-IT"
