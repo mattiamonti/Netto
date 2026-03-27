@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react"
-import {
-  Share,
-  Plus,
-  Download,
-  X,
-  Option,
-  Dot,
-  MoreHorizontal,
-} from "lucide-react"
+import { Share, Plus, X, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function PWAInstallPrompt() {
