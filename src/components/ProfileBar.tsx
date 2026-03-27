@@ -15,6 +15,12 @@ export default function ProfileBar({
   const navigate = useNavigate()
 
   const handleRefresh = () => {
+    const keys = Object.keys(localStorage)
+    keys.forEach((key) => {
+      if (key.startsWith("yahoo_finance_cache_")) {
+        localStorage.removeItem(key)
+      }
+    })
     window.location.reload()
   }
 
