@@ -123,9 +123,13 @@ function InvestmentForm({
         id="type"
         label="Tipo"
         value={type}
-        onChange={(v) => setType(v as InvestmentType)}
+        onChange={(v) => setType(v)}
         renderInput={(value, onChange) => (
-          <Tabs value={value} onValueChange={onChange} className="w-full">
+          <Tabs
+            value={value}
+            onValueChange={(v) => onChange(v as InvestmentType)}
+            className="w-full"
+          >
             <TabsList className="w-full">
               {INVESTMENT_TYPES.map((t) => (
                 <TabsTrigger key={t.value} value={t.value} className="flex-1">
@@ -169,17 +173,17 @@ function InvestmentForm({
   )
 }
 
-interface FormFieldProps<T extends string | number> {
+interface FormFieldProps<T extends string> {
   id: string
   label: string
   value: T
   onChange: (value: T) => void
   placeholder?: string
   disabled?: boolean
-  renderInput?: (value: T, onChange: (value: T) => void) => React.ReactNode
+  renderInput?: (value: string, onChange: (value: string) => void) => React.ReactNode
 }
 
-function FormField<T extends string | number>({
+function FormField<T extends string>({
   id,
   label,
   value,
@@ -192,7 +196,7 @@ function FormField<T extends string | number>({
     <div className="flex flex-col gap-2">
       <Label htmlFor={id}>{label}</Label>
       {renderInput ? (
-        renderInput(value, onChange)
+        renderInput(value, onChange as (value: string) => void)
       ) : (
         <Input
           id={id}
