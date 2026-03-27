@@ -1,4 +1,4 @@
-import { useState, useRef, type ChangeEvent } from "react"
+import { useState, useRef, type ChangeEvent, useEffect } from "react"
 import { useUserSettings } from "@/hooks/useUserSettings"
 import { useAppConfig } from "@/hooks/useAppConfig"
 import { Input } from "@/components/ui/input"
@@ -26,6 +26,8 @@ import {
   Trash2,
   Edit,
   ChevronRight,
+  Moon,
+  Sun,
 } from "lucide-react"
 import { Button } from "./ui/button"
 import type { AppConfigData } from "@/hooks/useAppConfig"
@@ -152,7 +154,24 @@ export default function UserSettingsForm() {
   const [importStatus, setImportStatus] = useState<
     "idle" | "success" | "error"
   >("idle")
+  const [isLight, setIsLight] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const theme = localStorage.getItem("theme")
+    setIsLight(theme === "light")
+  }, [])
+
+  const handleThemeToggle = (value: boolean) => {
+    const newTheme = value ? "light" : "dark"
+    localStorage.setItem("theme", newTheme)
+    setIsLight(value)
+    document.documentElement.classList.toggle("dark", value)
+    toast.success(`Tema ${value ? "scuro" : "chiaro"} attivato`, {
+      position: "top-center",
+    })
+    setTimeout(() => window.location.reload(), 500)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -292,6 +311,33 @@ export default function UserSettingsForm() {
                   checked={anonymousData}
                   onSwitch={(val) => setAnonymousData(val)}
                 />
+              </ItemContent>
+            </Item>
+          </ItemGroup>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h3 className="px-1 text-sm font-medium text-muted-foreground">
+            Aspetto
+          </h3>
+          <ItemGroup>
+            <Item variant="muted">
+              <ItemContent className="flex flex-row items-center justify-between">
+                <div className="flex flex-col gap-1">
+                  <Label htmlFor="darkMode">Tema scuro</Label>
+                  <p className="text-sm text-muted-foreground">
+                    Passa alla modalità dark / light
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Sun className="h-4 w-4 text-muted-foreground" />
+                  <Switch
+                    id="darkMode"
+                    checked={isLight}
+                    onCheckedChange={handleThemeToggle}
+                  />
+                  <Moon className="h-4 w-4 text-muted-foreground" />
+                </div>
               </ItemContent>
             </Item>
           </ItemGroup>

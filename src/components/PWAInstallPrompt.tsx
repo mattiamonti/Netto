@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
-import { Share, Plus, Download } from "lucide-react"
 import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog"
+  Share,
+  Plus,
+  Download,
+  X,
+  Option,
+  Dot,
+  MoreHorizontal,
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function PWAInstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false)
@@ -16,7 +16,6 @@ export default function PWAInstallPrompt() {
   const [isStandalone, setIsStandalone] = useState(false)
 
   useEffect(() => {
-    // Check if already installed/running as PWA
     const isStandaloneMode =
       window.matchMedia("(display-mode: standalone)").matches ||
       // @ts-ignore - iOS specific
@@ -24,7 +23,6 @@ export default function PWAInstallPrompt() {
 
     setIsStandalone(isStandaloneMode)
 
-    // Check if iOS
     const isIOSDevice =
       /iPad|iPhone|iPod/.test(navigator.userAgent) &&
       // @ts-ignore - iOS specific
@@ -32,14 +30,13 @@ export default function PWAInstallPrompt() {
 
     setIsIOS(isIOSDevice)
 
-    // Check if user has dismissed the prompt before
     const hasDismissed = localStorage.getItem("pwa-prompt-dismissed")
     const dismissedAt = hasDismissed ? parseInt(hasDismissed) : 0
-    const daysSinceDismissal = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24)
+    const daysSinceDismissal =
+      (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24)
 
-    // Show prompt if not installed, not dismissed recently (7 days), and is iOS
     if (!isStandaloneMode && isIOSDevice && daysSinceDismissal > 7) {
-      const timer = setTimeout(() => setShowPrompt(true), 3000)
+      const timer = setTimeout(() => setShowPrompt(true), 2000)
       return () => clearTimeout(timer)
     }
   }, [])
@@ -52,52 +49,76 @@ export default function PWAInstallPrompt() {
   if (!showPrompt || isStandalone) return null
 
   return (
-    <AlertDialog open={showPrompt} onOpenChange={(open) => !open && handleDismiss()}>
-      <AlertDialogContent className="sm:max-w-md">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center gap-2">
-            <Download className="h-5 w-5" />
-            Installa l'app
-          </AlertDialogTitle>
-          <AlertDialogDescription className="space-y-4">
-            <p>
-              Installa Portafoglio per accedere rapidamente ai tuoi investimenti
-              direttamente dalla home screen.
-            </p>
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-background/80 backdrop-blur-sm sm:items-center">
+      <div className="relative w-full max-w-md animate-in rounded-2xl border bg-background p-6 shadow-lg slide-in-from-bottom-10 fade-in">
+        <button
+          onClick={handleDismiss}
+          className="absolute top-4 right-4 rounded-full p-1 hover:bg-muted"
+        >
+          <X className="h-5 w-5 text-muted-foreground" />
+        </button>
 
-            {isIOS && (
-              <div className="flex flex-col gap-3 rounded-lg bg-muted p-4 text-sm">
-                <p className="font-medium">Su iPhone/iPad:</p>
-                <ol className="flex flex-col gap-2">
-                  <li className="flex items-center gap-2">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                      1
-                    </span>
-                    Tocca il pulsante{" "}
-                    <Share className="h-4 w-4" />
-                    <span className="italic">Condividi</span> nella barra Safari
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-                      2
-                    </span>
-                    Scorri e tocca{" "}
-                    <span className="flex items-center gap-1">
-                      <Plus className="h-4 w-4" />
-                      Aggiungi alla home
-                    </span>
-                  </li>
-                </ol>
+        <div className="flex flex-col items-center text-center">
+          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-muted">
+            <img src="/Netto/icon.svg" className="h-12 w-12" />
+          </div>
+
+          <h2 className="mb-2 text-xl font-semibold">
+            Installa l'app nella home
+          </h2>
+          <p className="mb-6 text-sm text-muted-foreground">
+            Ottieni un'esperienza migliore, accedi rapidamente ai tuoi
+            investimenti direttamente dalla tua home screen.
+          </p>
+
+          {isIOS && (
+            <div className="w-full space-y-4">
+              <div className="flex items-center gap-4 rounded-xl bg-muted p-4 text-left">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
+                  1
+                </div>
+                <div className="flex flex-1 items-center gap-2">
+                  <span className="text-sm">Premi</span>
+                  <Share className="h-4 w-4" />
+                  <span className="text-sm font-medium">Condividi</span>
+                </div>
               </div>
-            )}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleDismiss}>
+
+              <div className="flex items-start gap-4 rounded-xl bg-muted p-4 text-left">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
+                  2
+                </div>
+                <div className="flex flex-1 items-center gap-2">
+                  <span className="text-sm">Premi</span>
+                  <MoreHorizontal className="h-5 w-5" />
+                  <span className="text-sm font-medium">Altro</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 rounded-xl bg-muted p-4 text-left">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground">
+                  3
+                </div>
+                <div className="flex flex-1 items-center gap-2">
+                  <span className="text-sm">Premi</span>
+                  <Plus className="h-5 w-5" />
+                  <span className="text-sm font-medium">
+                    Aggiungi alla schermata home
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <Button
+            onClick={handleDismiss}
+            className="mt-6 w-full"
+            variant="outline"
+          >
             Più tardi
-          </AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </div>
+      </div>
+    </div>
   )
 }
