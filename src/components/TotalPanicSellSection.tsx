@@ -26,6 +26,18 @@ function calculateTotalValue(investments: Investment[]) {
 
   return { total, invested }
 }
+interface StatItemProps {
+  label: string
+  value: string
+}
+function StatItem({ label, value }: StatItemProps) {
+  return (
+    <span className="flex flex-row justify-between">
+      <span>{label}</span>
+      <span className="text-foreground">{value}</span>
+    </span>
+  )
+}
 
 interface TotalValueCardProps {
   investments: Investment[]
@@ -72,27 +84,22 @@ export default function TotalPanicSellSection({
               Simulazione vendita immediata
             </AlertTitle>
             <AlertDescription className="flex flex-col gap-2 text-muted-foreground">
-              <span>Di tutti gli strumenti, tenendo conto delle tasse.</span>
+              <span>Di tutti gli strumenti, al netto delle tasse.</span>
               <Separator />
-              <span className="flex flex-row justify-between">
-                <span>Tasse ({settings.taxPercentage}%)</span>
-                <span className="text-foreground">
-                  -{(grossProfit - netProfit).toFixed(2)} €
-                </span>
-              </span>
-              <span className="flex flex-row justify-between">
-                <span>Guadagno Netto</span>
-                <span className="text-foreground">
-                  {netProfit.toFixed(2)} €
-                </span>
-              </span>
+              <StatItem
+                label={`Tasse (${settings.taxPercentage}%)`}
+                value={`-${(grossProfit - netProfit).toFixed(2)} €`}
+              />
+              <StatItem
+                label="Guadagno netto"
+                value={`${netProfit.toFixed(2)} €`}
+              />
               <Separator />
-              <span className="flex flex-row justify-between text-lg">
-                <span>Totale</span>
-                <span className="text-foreground">
-                  {capital !== null ? capital.toFixed(2) : "0.00"} € (
-                  {percentage.toFixed(2)}%)
-                </span>
+              <span className="text-lg">
+                <StatItem
+                  label="Totale"
+                  value={`${capital !== null ? capital.toFixed(2) : "0.00"} € ( ${percentage.toFixed(2)}%)`}
+                />
               </span>
             </AlertDescription>
           </Alert>
